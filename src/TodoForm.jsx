@@ -7,15 +7,8 @@ function TodoForm({onAddTodo}) {
   const handleAddTodo = (event) => {
     event.preventDefault();
 
-    console.log("event object:", event);
-    console.log("event target:", event.target);
-    console.log("Input value:", event.target.todoTitle.value);
-
-    //const todoTitle = event.target.todoTitle.value.trim();
-
     onAddTodo(workingTodoTitle);
     setWorkingTodoTitle("");
-    //event.target.reset();
     inputRef.current.focus();
   };
 
