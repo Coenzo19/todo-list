@@ -24,11 +24,28 @@ function App() {
     });
     setTodoList(updatedArr);
   }
+
+  function updateTodo(editedTodo) {
+    const updatedTodos = todoList.map((todo) => {
+      if (todo.id === editedTodo.id) {
+        const matchingTodo = {
+          id: editedTodo.id,
+          title: editedTodo.title,
+          isCompleted: editedTodo.isCompleted
+        };
+        return matchingTodo;
+      } else {
+        return todo;
+      }
+    });
+    setTodoList(updatedTodos);
+  }
+
   return (
     <div>
       <h1>Todo List</h1>
       <TodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} />
+      <TodoList onUpdateTodo={updateTodo} todoList={todoList} onCompleteTodo={completeTodo} />
     </div>
   );
 }
