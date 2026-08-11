@@ -24,6 +24,7 @@ function App() {
     });
     setTodoList(updatedArr);
   }
+  
 
   function updateTodo(editedTodo) {
     const updatedTodos = todoList.map((todo) => {

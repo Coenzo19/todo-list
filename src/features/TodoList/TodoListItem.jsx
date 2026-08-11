@@ -21,13 +21,7 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo}) {
     }
     e.preventDefault();
 
-    const updatedTodo = {
-      id: todo.id,
-      title: workingTitle,
-      isCompleted: todo.isCompleted
-    };
-
-    onUpdateTodo(updatedTodo);
+    onUpdateTodo({...todo,title:workingTitle});
     setIsEditing(false);
   }
 
