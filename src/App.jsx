@@ -13,7 +13,7 @@ function App() {
     };
     setTodoList((previous) => [newTodo, ...previous]);
   }
-  // return todo.id===id? {...todo, isCompleted: true}:todo
+  
   function completeTodo(id) {
     setTodoList(
       todoList.map((todo) => {
