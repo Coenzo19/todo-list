@@ -1,0 +1,174 @@
+import {useState, useEffect} from "react";
+import TodoList from "./TodoList/TodoList.jsx";
+import TodoForm from "./TodoForm.jsx";
+
+export default function TodosPage({token}) {
+  const [todoList, setTodoList] = useState([]);
+  const [error, setError] = useState("");
+  const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchTodos() {
+      const params = new URLSearchParams({
+        limit: 100
+      });
+      try {
+        setIsTodoListLoading(true);
+        const response = await fetch(`/api/tasks?${params}`, {
+          headers: {"X-CSRF-TOKEN": token},
+          credentials: "include"
+        });
+
+        if (response.status === 401) {
+          throw new Error("unauthorized");
+        }
+        if (!response.ok) {
+          throw new Error("Error");
+        }
+
+        const data = await response.json();
+        setTodoList(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsTodoListLoading(false);
+      }
+    }
+  }, [token]);
+
+  async function addTodo(todoTitle) {
+    const newTodo = {
+      id: Date.now(),
+      title: todoTitle,
+      isCompleted: false
+    };
+    setTodoList((previous) => [...previous, newTodo]);
+
+    try {
+      const payload = {
+        title: newTodo.title,
+        isCompleted: newTodo.isCompleted
+      };
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
+        credentials: "include",
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        throw new Error(response.status);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setTodoList((prev) => [
+        ...prev.filter((todo) => todo.id !== newTodo.id),
+        data
+      ]);
+    } catch (error) {
+      console.log("error in addTodo");
+      console.log(error);
+      setError(error.message);
+      setTodoList((previous) =>
+        previous.filter((item) => item.id !== newTodo.id)
+      );
+    }
+  }
+
+  async function completeTodo(id) {
+    const originalTodo = todoList.find((todo) => todo.id === id);
+    const targetIndex = todoList.findIndex((todo) => todo.id === id);
+    if (targetIndex < 0 || !originalTodo) {
+      return;
+    }
+
+    setTodoList(
+      todoList.map((todo) => {
+        return todo.id === id ? {...todo, isCompleted: true} : todo;
+      })
+    );
+
+    try {
+      const response = await fetch(`/api/tasks/${id}`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
+        credentials: "include",
+        body: JSON.stringify({isCompleted: true})
+      });
+      if (!response.ok) {
+        throw new Error("error");
+      }
+    } catch (error) {
+      setTodoList((prev) => [
+        ...prev.slice(0, targetIndex),
+        originalTodo,
+        ...prev.slice(targetIndex + 1)
+      ]);
+      setError(error.message);
+    }
+  }
+
+  async function updateTodo(editedTodo) {
+    const beforeUpdateTodo = todoList.find((todo) => todo.id === editedTodo.id);
+    const targetIndex = todoList.findIndex((todo) => todo.id === editedTodo.id);
+    if (targetIndex < 0 || !beforeUpdateTodo) {
+      return;
+    }
+
+    const updatedTodos = todoList.map((todo) => {
+      if (todo.id === editedTodo.id) {
+        return {
+          ...editedTodo
+        };
+      } else {
+        return todo;
+      }
+    });
+    setTodoList(updatedTodos);
+
+    try {
+      const payload = {
+        title: editedTodo.title,
+        isCompleted: editedTodo.isCompleted
+      };
+
+      const response = await fetch(`/api/tasks/${editedTodo.id}`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
+        credentials: "include",
+        body: JSON.stringify(payload)
+      });
+      console.log("persisted");
+      if (!response.ok) {
+        throw new Error("error");
+      }
+    } catch (error) {
+      setTodoList((prev) => [
+        ...prev.slice(0, targetIndex),
+        beforeUpdateTodo,
+        ...prev.slice(targetIndex + 1)
+      ]);
+      setError(error.message);
+    }
+  }
+
+  return (
+    <div>
+      {error !== "" && (
+        <>
+          <p>{error}</p>
+          <button onClick={() => setError("")}>Clear Error</button>
+        </>
+      )}
+
+      {isTodoListLoading && <p>Loading</p>}
+
+      <TodoForm onAddTodo={addTodo} />
+      <TodoList
+        onUpdateTodo={updateTodo}
+        todoList={todoList}
+        onCompleteTodo={completeTodo}
+      />
+    </div>
+  );
+}
