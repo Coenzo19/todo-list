@@ -8,6 +8,7 @@ export default function TodosPage({token}) {
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 
   useEffect(() => {
+    
     async function fetchTodos() {
       const params = new URLSearchParams({
         limit: 100
@@ -27,16 +28,23 @@ export default function TodosPage({token}) {
         }
 
         const data = await response.json();
-        setTodoList(data);
+        console.log(data);
+        setTodoList(data.tasks);
+        
+        console.log("fetched");
       } catch (error) {
-        setError(error);
+        setError(error.message);
       } finally {
         setIsTodoListLoading(false);
       }
     }
+    fetchTodos();
   }, [token]);
 
+
+
   async function addTodo(todoTitle) {
+    
     const newTodo = {
       id: Date.now(),
       title: todoTitle,
@@ -67,7 +75,6 @@ export default function TodosPage({token}) {
       ]);
     } catch (error) {
       console.log("error in addTodo");
-      console.log(error);
       setError(error.message);
       setTodoList((previous) =>
         previous.filter((item) => item.id !== newTodo.id)

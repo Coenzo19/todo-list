@@ -10,7 +10,7 @@ export default function Logon({onSetEmail,onSetToken}) {
     e.preventDefault();
     try {
       setIsLoggingOn(true);
-      const response = await fetch("api/users/logon", {
+      const response = await fetch("/api/users/logon", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         credentials: "include",
@@ -24,7 +24,7 @@ export default function Logon({onSetEmail,onSetToken}) {
         setAuthError(`Authentication failed: ${data?.message}`);
       }
     } catch (error) {
-      setAuthError(`Error${error.name} | ${error.message}`);
+      setAuthError(`Error${error.name} || ${error.message}`);
     } finally {
       setIsLoggingOn(false);
     }
