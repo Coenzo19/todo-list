@@ -8,7 +8,6 @@ export default function TodosPage({token}) {
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 
   useEffect(() => {
-    
     async function fetchTodos() {
       const params = new URLSearchParams({
         limit: 100
@@ -28,10 +27,8 @@ export default function TodosPage({token}) {
         }
 
         const data = await response.json();
-        console.log(data);
+
         setTodoList(data.tasks);
-        
-        console.log("fetched");
       } catch (error) {
         setError(error.message);
       } finally {
@@ -41,16 +38,13 @@ export default function TodosPage({token}) {
     fetchTodos();
   }, [token]);
 
-
-
   async function addTodo(todoTitle) {
-    
     const newTodo = {
       id: Date.now(),
       title: todoTitle,
       isCompleted: false
     };
-    setTodoList((previous) => [...previous, newTodo]);
+    setTodoList((previous) => [newTodo, ...previous]);
 
     try {
       const payload = {
@@ -68,13 +62,21 @@ export default function TodosPage({token}) {
       }
 
       const data = await response.json();
-      console.log(data);
-      setTodoList((prev) => [
-        ...prev.filter((todo) => todo.id !== newTodo.id),
-        data
-      ]);
+
+      setTodoList((prev) =>
+        prev.map((todo) => {
+          if (todo.id === newTodo.id) {
+            return {
+              ...todo,
+              id: data.id,
+              title: data.title,
+              isCompleted: data.isCompleted
+            };
+          }
+          return todo;
+        })
+      );
     } catch (error) {
-      console.log("error in addTodo");
       setError(error.message);
       setTodoList((previous) =>
         previous.filter((item) => item.id !== newTodo.id)
@@ -145,7 +147,7 @@ export default function TodosPage({token}) {
         credentials: "include",
         body: JSON.stringify(payload)
       });
-      console.log("persisted");
+
       if (!response.ok) {
         throw new Error("error");
       }
