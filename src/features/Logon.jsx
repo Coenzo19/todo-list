@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-export default function Logon({onSetEmail,onSetToken}) {
+export default function Logon({onSetEmail, onSetToken}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
@@ -24,7 +24,7 @@ export default function Logon({onSetEmail,onSetToken}) {
         setAuthError(`Authentication failed: ${data?.message}`);
       }
     } catch (error) {
-      setAuthError(`Error${error.name} || ${error.message}`);
+      setAuthError(`Error${error.name} | ${error.message}`);
     } finally {
       setIsLoggingOn(false);
     }
@@ -49,7 +49,7 @@ export default function Logon({onSetEmail,onSetToken}) {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit" disabled={isLoggingOn}>
-        {isLoggingOn ? "Logging In" : "Log On"}
+        {isLoggingOn ? "Logging In..." : "Log On"}
       </button>
     </form>
   );

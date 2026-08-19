@@ -23,7 +23,7 @@ export default function TodosPage({token}) {
           throw new Error("unauthorized");
         }
         if (!response.ok) {
-          throw new Error("Error");
+          throw new Error('error');
         }
 
         const data = await response.json();
@@ -86,10 +86,6 @@ export default function TodosPage({token}) {
 
   async function completeTodo(id) {
     const originalTodo = todoList.find((todo) => todo.id === id);
-    const targetIndex = todoList.findIndex((todo) => todo.id === id);
-    if (targetIndex < 0 || !originalTodo) {
-      return;
-    }
 
     setTodoList(
       todoList.map((todo) => {
@@ -105,24 +101,27 @@ export default function TodosPage({token}) {
         body: JSON.stringify({isCompleted: true})
       });
       if (!response.ok) {
-        throw new Error("error");
+        throw new Error(response.status);
       }
     } catch (error) {
-      setTodoList((prev) => [
-        ...prev.slice(0, targetIndex),
-        originalTodo,
-        ...prev.slice(targetIndex + 1)
-      ]);
+      setTodoList((prev) =>
+        prev.map((todo) => {
+          if (todo.id === originalTodo.id) {
+            return {
+              ...todo,
+              isCompleted: originalTodo.isCompleted
+            };
+          }
+          return todo;
+        })
+      );
+
       setError(error.message);
     }
   }
 
   async function updateTodo(editedTodo) {
     const beforeUpdateTodo = todoList.find((todo) => todo.id === editedTodo.id);
-    const targetIndex = todoList.findIndex((todo) => todo.id === editedTodo.id);
-    if (targetIndex < 0 || !beforeUpdateTodo) {
-      return;
-    }
 
     const updatedTodos = todoList.map((todo) => {
       if (todo.id === editedTodo.id) {
@@ -141,7 +140,7 @@ export default function TodosPage({token}) {
         isCompleted: editedTodo.isCompleted
       };
 
-      const response = await fetch(`/api/tasks/${editedTodo.id}`, {
+      const response = await fetch(`/api/tsks/${editedTodo.id}`, {
         method: "PATCH",
         headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
         credentials: "include",
@@ -149,16 +148,38 @@ export default function TodosPage({token}) {
       });
 
       if (!response.ok) {
-        throw new Error("error");
+        throw new Error(response.status);
       }
     } catch (error) {
-      setTodoList((prev) => [
-        ...prev.slice(0, targetIndex),
-        beforeUpdateTodo,
-        ...prev.slice(targetIndex + 1)
-      ]);
+      setTodoList((prev) =>
+        prev.map((todo) => {
+          if (todo.id === beforeUpdateTodo.id) {
+            return {
+              ...todo,
+              id: beforeUpdateTodo.id,
+              title: beforeUpdateTodo.title,
+              isCompleted: beforeUpdateTodo.isCompleted
+            };
+          }
+          return todo;
+        })
+      );
       setError(error.message);
     }
+
+    setTodoList((prev) =>
+      prev.map((todo) => {
+        if (todo.id === beforeUpdateTodo.id) {
+          return {
+            ...todo,
+            id: beforeUpdateTodo.id,
+            title: beforeUpdateTodo.title,
+            isCompleted: beforeUpdateTodo.isCompleted
+          };
+        }
+        return todo;
+      })
+    );
   }
 
   return (
