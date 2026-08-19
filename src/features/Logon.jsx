@@ -10,6 +10,7 @@ export default function Logon({onSetEmail, onSetToken}) {
     e.preventDefault();
     try {
       setIsLoggingOn(true);
+      setAuthError('');
       const response = await fetch("/api/users/logon", {
         method: "POST",
         headers: {"Content-Type": "application/json"},

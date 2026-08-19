@@ -140,7 +140,7 @@ export default function TodosPage({token}) {
         isCompleted: editedTodo.isCompleted
       };
 
-      const response = await fetch(`/api/tsks/${editedTodo.id}`, {
+      const response = await fetch(`/api/tasks/${editedTodo.id}`, {
         method: "PATCH",
         headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
         credentials: "include",
@@ -166,20 +166,6 @@ export default function TodosPage({token}) {
       );
       setError(error.message);
     }
-
-    setTodoList((prev) =>
-      prev.map((todo) => {
-        if (todo.id === beforeUpdateTodo.id) {
-          return {
-            ...todo,
-            id: beforeUpdateTodo.id,
-            title: beforeUpdateTodo.title,
-            isCompleted: beforeUpdateTodo.isCompleted
-          };
-        }
-        return todo;
-      })
-    );
   }
 
   return (
@@ -191,7 +177,7 @@ export default function TodosPage({token}) {
         </>
       )}
 
-      {isTodoListLoading && <p>Loading</p>}
+      {isTodoListLoading && <h1>Loading</h1>}
 
       <TodoForm onAddTodo={addTodo} />
       <TodoList
