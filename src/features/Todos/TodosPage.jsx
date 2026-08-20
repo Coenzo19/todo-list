@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import TodoList from "./TodoList/TodoList.jsx";
 import TodoForm from "./TodoForm.jsx";
 
@@ -6,6 +6,7 @@ export default function TodosPage({token}) {
   const [todoList, setTodoList] = useState([]);
   const [error, setError] = useState("");
   const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+  
 
   useEffect(() => {
     async function fetchTodos() {
@@ -23,7 +24,7 @@ export default function TodosPage({token}) {
           throw new Error("unauthorized");
         }
         if (!response.ok) {
-          throw new Error("error");
+          throw new Error("error retieving data");
         }
 
         const data = await response.json();
@@ -47,6 +48,7 @@ export default function TodosPage({token}) {
     setTodoList((previous) => [newTodo, ...previous]);
 
     try {
+      setError("");
       const payload = {
         title: newTodo.title,
         isCompleted: newTodo.isCompleted
@@ -58,7 +60,7 @@ export default function TodosPage({token}) {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        throw new Error(response.status);
+        throw new Error("Error: could not add Todo");
       }
 
       const data = await response.json();
@@ -91,6 +93,7 @@ export default function TodosPage({token}) {
     );
 
     try {
+      setError("");
       const response = await fetch(`/api/tasks/${id}`, {
         method: "PATCH",
         headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
@@ -98,7 +101,7 @@ export default function TodosPage({token}) {
         body: JSON.stringify({isCompleted: true})
       });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`Error: ${response.status} could not complete todo`);
       }
     } catch (error) {
       setTodoList((prev) =>
@@ -115,22 +118,27 @@ export default function TodosPage({token}) {
   }
 
   async function updateTodo(editedTodo) {
-    const beforeUpdateTodo = todoList.find((todo) => todo.id === editedTodo.id);
-
-    if (!beforeUpdateTodo) {
+    
+    if (!editedTodo.id) {
+      return;
+    }
+    const oldTodo = todoList.find((todo) => todo.id === editedTodo.id);
+    
+    if (!oldTodo) {
       return;
     }
 
-    setTodoList((prev) =>
-      prev.map((todo) => {
+    setTodoList((prev) => {
+      return prev.map((todo) => {
         if (todo.id === editedTodo.id) {
           return editedTodo;
         }
         return todo;
-      })
-    );
+      });
+    });
 
     try {
+      setError("");
       const payload = {
         title: editedTodo.title,
         isCompleted: editedTodo.isCompleted
@@ -142,13 +150,13 @@ export default function TodosPage({token}) {
         body: JSON.stringify(payload)
       });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        throw new Error(`Error: ${response.status}, could not edit Todo`);
       }
     } catch (error) {
       setTodoList((prev) =>
         prev.map((todo) => {
-          if (todo.id === beforeUpdateTodo.id) {
-            return beforeUpdateTodo;
+          if (todo.id === oldTodo.id) {
+            return oldTodo;
           }
           return todo;
         })
@@ -166,7 +174,7 @@ export default function TodosPage({token}) {
         </>
       )}
 
-      {isTodoListLoading && <h1>Loading</h1>}
+      {isTodoListLoading && <h2>Loading</h2>}
 
       <TodoForm onAddTodo={addTodo} />
       <TodoList
