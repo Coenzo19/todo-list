@@ -119,15 +119,13 @@ export default function TodosPage({token}) {
 
   async function updateTodo(editedTodo) {
     
-    if (!editedTodo.id) {
-      return;
-    }
+
     const oldTodo = todoList.find((todo) => todo.id === editedTodo.id);
     
+
     if (!oldTodo) {
       return;
     }
-
     setTodoList((prev) => {
       return prev.map((todo) => {
         if (todo.id === editedTodo.id) {
@@ -136,8 +134,8 @@ export default function TodosPage({token}) {
         return todo;
       });
     });
-
     try {
+      
       setError("");
       const payload = {
         title: editedTodo.title,
