@@ -1,7 +1,7 @@
 // import {useState} from "react";
-import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
-import {isValidTodoTitle} from "../../utils/todoValidation.js";
-import {useEditableTitle} from "../../hooks/useEditableTitle";
+import TextInputWithLabel from "../../../shared/TextInputWithLabel.jsx";
+import {isValidTodoTitle} from "../../../utils/todoValidation.js";
+import {useEditableTitle} from "../../../hooks/useEditableTitle";
 
 function TodoListItem({onUpdateTodo, todo, onCompleteTodo}) {
   const {
