@@ -20,7 +20,8 @@ export default function TodosPage({token}) {
     async function fetchTodos() {
       const paramObject = {
         sortBy,
-        sortDirection
+        sortDirection,
+        limit:50
       };
       if (debouncedFilterTerm) {
         paramObject.find = debouncedFilterTerm;
@@ -38,10 +39,11 @@ export default function TodosPage({token}) {
           throw new Error("unauthorized");
         }
         if (!response.ok) {
-          throw new Error("error retieving data");
+          throw new Error("error retrieving data");
         }
 
         const data = await response.json();
+        
         
         setTodoList(data.tasks);
         setFilterError("");
@@ -96,7 +98,7 @@ export default function TodosPage({token}) {
       }
 
       const data = await response.json();
-
+      console.log(data);
       setTodoList((prev) =>
         prev.map((todo) => {
           if (todo.id === newTodo.id) {
