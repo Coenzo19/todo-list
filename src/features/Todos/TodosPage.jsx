@@ -20,8 +20,8 @@ export default function TodosPage({token}) {
     async function fetchTodos() {
       const paramObject = {
         sortBy,
-        sortDirection,
-        limit:50
+        sortDirection
+        
       };
       if (debouncedFilterTerm) {
         paramObject.find = debouncedFilterTerm;
