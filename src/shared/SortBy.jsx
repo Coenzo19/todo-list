@@ -6,15 +6,13 @@ export default function SortBy({
 }) {
   return (
     <>
-      <label htmlFor="sortBy">Sort By</label>
-
+      <label htmlFor="sortBy">Sort by</label>
       <select value={sortBy} onChange={(e) => onSortByChange(e.target.value)} id="sortBy">
         <option value='createdAt'>Created At</option>
         <option value='title'>Title</option>
       </select>
 
       <label htmlFor="order">Order</label>
-
       <select
       value={sortDirection}
         onChange={(e) => onSortDirectionChange(e.target.value)}

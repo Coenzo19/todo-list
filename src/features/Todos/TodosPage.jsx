@@ -68,7 +68,7 @@ export default function TodosPage({token}) {
 
   const invalidateCache = useCallback(() => {
     setDataVersion((prev) => prev + 1);
-    console.log("Invalidating memo cache after todo mutation");
+    
   }, []);
 
   async function addTodo(todoTitle) {
@@ -80,7 +80,7 @@ export default function TodosPage({token}) {
     setTodoList((previous) => [newTodo, ...previous]);
 
     try {
-      //setError("");
+      
       const payload = {
         title: newTodo.title,
         isCompleted: newTodo.isCompleted
@@ -127,7 +127,7 @@ export default function TodosPage({token}) {
     );
 
     try {
-      //setError("");
+      
       const response = await fetch(`/api/tasks/${id}`, {
         method: "PATCH",
         headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},

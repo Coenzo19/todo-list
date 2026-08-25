@@ -1,16 +1,16 @@
 import TodoListItem from "./TodoListItem.jsx";
 import {useMemo} from "react"
 function TodoList({onUpdateTodo, todoList, onCompleteTodo, dataVersion}) {
-  // const filteredTodoList = todoList.filter((todo) => !todo.isCompleted);
+  
 
   const filteredTodoList = useMemo(() => {
-    console.log(`Recalculating filtered todos (v${dataVersion})`);
+    
     return {
       version: dataVersion,
       todos: todoList.filter((todo) => !todo.isCompleted)
     };
   }, [todoList, dataVersion]);
-  console.log(filteredTodoList);
+  
   return (
     <>
       {filteredTodoList.todos.length === 0 ? (
