@@ -47,6 +47,7 @@ export default function TodosPage({token}) {
         
         setTodoList(data.tasks);
         setFilterError("");
+        setError('');
       } catch (error) {
         if (
           debouncedFilterTerm ||
@@ -98,7 +99,7 @@ export default function TodosPage({token}) {
       }
 
       const data = await response.json();
-      console.log(data);
+      
       setTodoList((prev) =>
         prev.map((todo) => {
           if (todo.id === newTodo.id) {
