@@ -10,11 +10,10 @@ export default function Logoff() {
       const result = await logout();
       console.log(result);
 
-      if (result.status !== "ok") {
-        throw new Error(result.error)
+      if (!result.success) {
+        throw new Error(result.error);
       }
     } catch (error) {
-      console.log("test");
       console.log(error);
     } finally {
       setIsLoggingOff(false);

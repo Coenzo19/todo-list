@@ -25,8 +25,6 @@ export const TODO_ACTIONS = {
   CLEAR_ERROR: "CLEAR_ERROR",
   CLEAR_FILTER_ERROR: "CLEAR_FILTER_ERROR",
   RESET_FILTERS: "RESET_FILTERS",
-  SET_ERROR: "SET_ERROR",
-  SET_FILTER_ERROR: "SET_FILTER_ERROR",
   SET_DATAVERSION: "SET_DATAVERSION"
 };
 
@@ -100,7 +98,6 @@ export function todoReducer(state, action) {
       };
 
     case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
-      
       return {
         ...state,
         todoList: state.todoList.map((todo) => {
@@ -173,16 +170,6 @@ export function todoReducer(state, action) {
         sortDirection: "asc",
         filterError: ""
       };
-    case TODO_ACTIONS.SET_ERROR:
-      return {
-        ...state,
-        error: action.payload.message
-      };
-    case TODO_ACTIONS.SET_FILTER_ERROR:
-      return {
-        ...state,
-        filterError: action.payload.message
-      };
 
     case TODO_ACTIONS.CLEAR_ERROR:
       return {
@@ -201,7 +188,6 @@ export function todoReducer(state, action) {
       return {
         ...state,
         dataVersion: action.payload.dataVersion
-        
       };
 
     default:

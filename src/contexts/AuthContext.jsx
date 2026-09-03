@@ -5,7 +5,6 @@ const AuthContext = createContext();
 export function useAuth() {
   const context = useContext(AuthContext);
 
-
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
@@ -29,7 +28,6 @@ export function AuthProvider({children}) {
       const res = await fetch("/api/users/logon", options);
       const data = await res.json();
 
-
       if (res.status === 200 && data.name && data.csrfToken) {
         // Success: Update state
         console.log("success");
@@ -37,7 +35,6 @@ export function AuthProvider({children}) {
         setToken(data.csrfToken);
         return {success: true};
       } else {
-      
         console.log("fail");
         return {
           success: false,
@@ -65,29 +62,17 @@ export function AuthProvider({children}) {
         headers: {"Content-Type": "application/json", "X-CSRF-Token": token},
         credentials: "include"
       };
-    
 
       const res = await fetch("/api/users/logoff", options);
       console.log(res);
-      const data = await res.json();
-      console.log(data);
-      if(!data){
-        console.log('no data')
-      }
 
       if (res.status === 200) {
-        
-        console.log("successfully loggedOff");
         return {success: true};
       } else {
-      
-        console.log("failure");
-        return {
-          success: false,
-          error: `LogOff failed: ${data?.message}`
-        };
+        throw new Error(res.statusText);
       }
     } catch (error) {
+      console.log(error.message);
       return {
         success: false,
         error: "Network error during logout"
