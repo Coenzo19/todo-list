@@ -51,21 +51,18 @@ export function AuthProvider({children}) {
 
   const logout = async () => {
     if (!token) {
-      
       setEmail("");
       setToken("");
       return;
     }
-//console.log(token);
+    //console.log(token);
     try {
       const options = {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(token),
-        credentials: "include"
+        headers: {"Content-Type": "application/json", "X-CSRF-Token": token}
       };
 
-      const res = await fetch("/api/user/logoff", options);
+      const res = await fetch("/api/users/logoff", options);
       console.log(res);
       const data = await res.json();
       console.log(data);
