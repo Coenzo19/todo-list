@@ -55,7 +55,7 @@ export function AuthProvider({children}) {
       setToken("");
       return;
     }
-    //console.log(token);
+
     try {
       const options = {
         method: "POST",
@@ -69,11 +69,11 @@ export function AuthProvider({children}) {
 
       if (res.status === 200) {
         // Success: Update state
-
+        console.log("success");
         return {success: true};
       } else {
         // Failure: Return error
-
+        console.log("failure");
         return {
           success: false,
           error: `LogOff failed: ${data?.message}`

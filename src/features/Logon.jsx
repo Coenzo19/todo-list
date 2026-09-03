@@ -1,36 +1,36 @@
 import {useState} from "react";
-import { useAuth } from "../contexts/AuthContext.jsx";
+import {useAuth} from "../contexts/AuthContext.jsx";
 export default function Logon() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [isLoggingOn, setIsLoggingOn] = useState(false);
 
-const {login}=useAuth();
+  const {login} = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      setIsLoggingOn(true);
-      setAuthError('');
-      const response = await fetch("/api/users/logon", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify({email, password})
-      });
-      const data = await response.json();
-      console.log(data.email);
-      if (response.status === 200 && data.name && data.csrfToken) {
-        login(email,password);
-      } else {
-        setAuthError(`Authentication failed: ${data?.message}`);
-      }
-    } catch (error) {
-      setAuthError(`Error: ${error.name} | ${error.message}`);
-    } finally {
-      setIsLoggingOn(false);
-    }
+    // try {
+    //  setIsLoggingOn(true);
+    //   setAuthError("");
+    //   const response = await fetch("/api/users/logon", {
+    //     method: "POST",
+    //     headers: {"Content-Type": "application/json"},
+    //     credentials: "include",
+    //     body: JSON.stringify({email, password})
+    //   });
+    //   const data = await response.json();
+    //   console.log(data.email);
+    //   if (response.status === 200 && data.name && data.csrfToken) {
+    login(email, password);
+    //     } else {
+    //       setAuthError(`Authentication failed: ${data?.message}`);
+    //     }
+    //   } catch (error) {
+    //     setAuthError(`Error: ${error.name} | ${error.message}`);
+    //   } finally {
+    //   setIsLoggingOn(false);
+    //   }
   }
   return (
     <form onSubmit={handleSubmit}>

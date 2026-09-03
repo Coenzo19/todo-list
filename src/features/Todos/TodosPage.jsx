@@ -4,15 +4,13 @@ import TodoForm from "./TodoForm.jsx";
 import SortBy from "../../shared/SortBy.jsx";
 import useDebounce from "../../utils/useDebounce.js";
 import FilterInput from "../../shared/FilterInput.jsx";
-import { useAuth } from "../../contexts/AuthContext.jsx";
+import {useAuth} from "../../contexts/AuthContext.jsx";
 
 import {
   todoReducer,
   initialTodoState,
   TODO_ACTIONS
 } from "../../reducers/todoReducer";
-
-
 
 export default function TodosPage() {
   //const [todoList, setTodoList] = useState([]);
@@ -24,7 +22,7 @@ export default function TodosPage() {
   // const [dataVersion, setDataVersion] = useState(0);
   // const [filterError, setFilterError] = useState("");
 
-  const {token}=useAuth()
+  const {token} = useAuth();
 
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
 
@@ -281,25 +279,23 @@ export default function TodosPage() {
 
   return (
     <div>
-      
       <SortBy
         sortBy={sortBy}
         sortDirection={sortDirection}
         onSortByChange={(value) =>
-          dispatch({type: TODO_ACTIONS.SET_SORT, payload: value})
+          dispatch({type: TODO_ACTIONS.SET_SORT, payload: {sort: value}})
         }
         onSortDirectionChange={(value) =>
-          dispatch({type: TODO_ACTIONS.SET_DIRECTION, payload: value})
+          dispatch({
+            type: TODO_ACTIONS.SET_DIRECTION,
+            payload: {direction: value}
+          })
         }
       />
       {error && (
         <>
           <p>{error}</p>
-          <button
-            onClick={() =>
-              dispatch({type: TODO_ACTIONS.SET_ERROR, payload: ""})
-            }
-          >
+          <button onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}>
             Clear Error
           </button>
         </>
@@ -307,11 +303,7 @@ export default function TodosPage() {
       {filterError && (
         <div>
           <p>{filterError}</p>
-          <button
-            onClick={() =>
-              dispatch({type: TODO_ACTIONS.SET_ERROR, payload: ""})
-            }
-          >
+          <button onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}>
             Clear Filter Error
           </button>
           <button
