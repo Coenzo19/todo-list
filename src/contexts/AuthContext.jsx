@@ -4,7 +4,7 @@ const AuthContext = createContext();
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  console.log("Auth context:", context); // Remove this later
+
 
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
@@ -29,13 +29,16 @@ export function AuthProvider({children}) {
       const res = await fetch("/api/users/logon", options);
       const data = await res.json();
 
+
       if (res.status === 200 && data.name && data.csrfToken) {
         // Success: Update state
+        console.log("success");
         setEmail(data.name);
         setToken(data.csrfToken);
         return {success: true};
       } else {
-        // Failure: Return error
+      
+        console.log("fail");
         return {
           success: false,
           error: `Authentication failed: ${data?.message}`
@@ -53,26 +56,31 @@ export function AuthProvider({children}) {
     if (!token) {
       setEmail("");
       setToken("");
-      return;
+      return {success: true};
     }
 
     try {
       const options = {
         method: "POST",
-        headers: {"Content-Type": "application/json", "X-CSRF-Token": token}
+        headers: {"Content-Type": "application/json", "X-CSRF-Token": token},
+        credentials: "include"
       };
+    
 
       const res = await fetch("/api/users/logoff", options);
       console.log(res);
       const data = await res.json();
       console.log(data);
+      if(!data){
+        console.log('no data')
+      }
 
       if (res.status === 200) {
-        // Success: Update state
-        console.log("success");
+        
+        console.log("successfully loggedOff");
         return {success: true};
       } else {
-        // Failure: Return error
+      
         console.log("failure");
         return {
           success: false,

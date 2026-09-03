@@ -20,9 +20,10 @@ export const TODO_ACTIONS = {
 
   //Ui operations
   SET_SORT: "SET_SORT",
-  SET_DIRECTION: "SET_DIRECTION",
+
   SET_FILTER: "SET_FILTER",
   CLEAR_ERROR: "CLEAR_ERROR",
+  CLEAR_FILTER_ERROR: "CLEAR_FILTER_ERROR",
   RESET_FILTERS: "RESET_FILTERS",
   SET_ERROR: "SET_ERROR",
   SET_FILTER_ERROR: "SET_FILTER_ERROR",
@@ -69,7 +70,6 @@ export function todoReducer(state, action) {
         todoList: [action.payload, ...state.todoList]
       };
 
-    ////////////////////////////////////////////////////////////
     case TODO_ACTIONS.ADD_TODO_SUCCESS:
       return {
         ...state,
@@ -80,7 +80,6 @@ export function todoReducer(state, action) {
           return todo;
         })
       };
-    ////////////////////////////////////////////////////////////
 
     case TODO_ACTIONS.ADD_TODO_ERROR:
       return {
@@ -100,8 +99,17 @@ export function todoReducer(state, action) {
         })
       };
 
-    // case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
-    //   return {};
+    case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
+      
+      return {
+        ...state,
+        todoList: state.todoList.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return action.payload.fetchedTodo;
+          }
+          return todo;
+        })
+      };
     case TODO_ACTIONS.COMPLETE_TODO_ERROR:
       return {
         ...state,
@@ -124,8 +132,16 @@ export function todoReducer(state, action) {
         }),
         error: ""
       };
-    // case TODO_ACTIONS.UPDATE_TODO_SUCCESS:
-    //   return {};
+    case TODO_ACTIONS.UPDATE_TODO_SUCCESS:
+      return {
+        ...state,
+        todoList: state.todoList.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return action.payload.fetchedTodo;
+          }
+          return todo;
+        })
+      };
     case TODO_ACTIONS.UPDATE_TODO_ERROR:
       return {
         ...state,
@@ -140,13 +156,10 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.SET_SORT:
       return {
         ...state,
-        sortBy: action.payload.sort
+        sortBy: action.payload.sortBy,
+        sortDirection: action.payload.sortDirection
       };
-    case TODO_ACTIONS.SET_DIRECTION:
-      return {
-        ...state,
-        sortDirection: action.payload.direction
-      };
+
     case TODO_ACTIONS.SET_FILTER:
       return {
         ...state,
@@ -157,7 +170,7 @@ export function todoReducer(state, action) {
         ...state,
         filterTerm: "",
         sortBy: "createdAt",
-        sortDirection: "desc",
+        sortDirection: "asc",
         filterError: ""
       };
     case TODO_ACTIONS.SET_ERROR:
@@ -174,15 +187,21 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.CLEAR_ERROR:
       return {
         ...state,
-        filterError: "",
+
         error: ""
+      };
+    case TODO_ACTIONS.CLEAR_FILTER_ERROR:
+      return {
+        ...state,
+
+        filterError: ""
       };
 
     case TODO_ACTIONS.SET_DATAVERSION:
       return {
         ...state,
         dataVersion: action.payload.dataVersion
-        //filterTerm: action.payload.filterTerm
+        
       };
 
     default:
