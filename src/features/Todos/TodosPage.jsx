@@ -209,8 +209,7 @@ export default function TodosPage() {
         body: JSON.stringify(payload)
       });
       const data = await response.json();
-      console.log(response);
-      console.log(data);
+      
       if (!response.ok) {
         throw new Error(`Error: ${response.status}, could not edit Todo`);
       }

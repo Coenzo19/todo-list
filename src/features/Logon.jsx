@@ -13,12 +13,11 @@ export default function Logon() {
     try {
       setIsLoggingOn(true);
 
-      const result=await login(email, password);
-      console.log(result);
-      if(result.success===false){
-        setAuthError(result.error)
+      const result = await login(email, password);
+
+      if (result.success === false) {
+        setAuthError(result.error);
       }
-      
     } catch (error) {
       setAuthError(`Error: ${error.name} | ${error.message}`);
     } finally {

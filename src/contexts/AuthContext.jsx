@@ -30,12 +30,11 @@ export function AuthProvider({children}) {
 
       if (res.status === 200 && data.name && data.csrfToken) {
         // Success: Update state
-        console.log("success");
+
         setEmail(data.name);
         setToken(data.csrfToken);
         return {success: true};
       } else {
-        console.log("fail");
         return {
           success: false,
           error: `Authentication failed: ${data?.message}`
@@ -64,7 +63,6 @@ export function AuthProvider({children}) {
       };
 
       const res = await fetch("/api/users/logoff", options);
-      console.log(res);
 
       if (res.status === 200) {
         return {success: true};
@@ -72,7 +70,6 @@ export function AuthProvider({children}) {
         throw new Error(res.statusText);
       }
     } catch (error) {
-      console.log(error.message);
       return {
         success: false,
         error: "Network error during logout"
