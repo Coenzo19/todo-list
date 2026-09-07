@@ -66,7 +66,7 @@ export default function TodosPage() {
         if (
           debouncedFilterTerm ||
           sortBy !== "createdAt" ||
-          sortDirection !== "desc"
+          sortDirection !== "asc"
         ) {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
@@ -91,13 +91,6 @@ export default function TodosPage() {
       payload: {filterTerm: newTerm}
     });
   };
-
-  const invalidateCache = useCallback(() => {
-    dispatch({
-      type: TODO_ACTIONS.SET_DATAVERSION,
-      payload: {dataVersion: dataVersion + 1}
-    });
-  }, [dataVersion]);
 
   async function addTodo(todoTitle) {
     const newTodo = {
@@ -135,7 +128,7 @@ export default function TodosPage() {
         }
       });
 
-      invalidateCache();
+     
     } catch (error) {
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_ERROR,
@@ -167,16 +160,16 @@ export default function TodosPage() {
       });
 
       const data = await response.json();
-      console.log(response);
-      console.log(data);
+     
       if (!response.ok) {
+        
         throw new Error(`Error: ${response.status} could not complete todo`);
       }
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS,
         payload: {id: data.id, fetchedTodo: data}
       });
-      invalidateCache();
+      
     } catch (error) {
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
@@ -197,7 +190,6 @@ export default function TodosPage() {
 
     dispatch({type: TODO_ACTIONS.UPDATE_TODO_START, payload: editedTodo});
     try {
-     
       const payload = {
         title: editedTodo.title,
         isCompleted: editedTodo.isCompleted
@@ -209,7 +201,7 @@ export default function TodosPage() {
         body: JSON.stringify(payload)
       });
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status}, could not edit Todo`);
       }
@@ -220,8 +212,10 @@ export default function TodosPage() {
           id: data.id
         }
       });
-      invalidateCache();
+      
+      
     } catch (error) {
+      
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
         payload: {

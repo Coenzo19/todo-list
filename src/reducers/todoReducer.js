@@ -20,12 +20,10 @@ export const TODO_ACTIONS = {
 
   //Ui operations
   SET_SORT: "SET_SORT",
-
   SET_FILTER: "SET_FILTER",
   CLEAR_ERROR: "CLEAR_ERROR",
   CLEAR_FILTER_ERROR: "CLEAR_FILTER_ERROR",
-  RESET_FILTERS: "RESET_FILTERS",
-  SET_DATAVERSION: "SET_DATAVERSION"
+  RESET_FILTERS: "RESET_FILTERS"
 };
 
 export const initialTodoState = {
@@ -40,7 +38,8 @@ export const initialTodoState = {
 };
 
 export function todoReducer(state, action) {
-  //console.log("Dispatched action:", action.type, action.payload);
+  console.log("Dispatched action:", action.type, action.payload);
+ 
   switch (action.type) {
     case TODO_ACTIONS.FETCH_START:
       return {
@@ -65,12 +64,14 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.ADD_TODO_START:
       return {
         ...state,
+        error: "",
         todoList: [action.payload, ...state.todoList]
       };
 
     case TODO_ACTIONS.ADD_TODO_SUCCESS:
       return {
         ...state,
+        dataVersion: state.dataVersion + 1,
         todoList: state.todoList.map((todo) => {
           if (todo.id === action.payload.id) {
             return action.payload.addedTodo;
@@ -90,6 +91,7 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.COMPLETE_TODO_START:
       return {
         ...state,
+        error: "",
         todoList: state.todoList.map((todo) => {
           return todo.id === action.payload
             ? {...todo, isCompleted: true}
@@ -100,6 +102,8 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
       return {
         ...state,
+        
+        dataVersion: state.dataVersion + 1,
         todoList: state.todoList.map((todo) => {
           if (todo.id === action.payload.id) {
             return action.payload.fetchedTodo;
@@ -132,6 +136,7 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.UPDATE_TODO_SUCCESS:
       return {
         ...state,
+        dataVersion: state.dataVersion + 1,
         todoList: state.todoList.map((todo) => {
           if (todo.id === action.payload.id) {
             return action.payload.fetchedTodo;
@@ -182,12 +187,6 @@ export function todoReducer(state, action) {
         ...state,
 
         filterError: ""
-      };
-
-    case TODO_ACTIONS.SET_DATAVERSION:
-      return {
-        ...state,
-        dataVersion: action.payload.dataVersion
       };
 
     default:
