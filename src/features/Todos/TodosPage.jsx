@@ -127,8 +127,6 @@ export default function TodosPage() {
           addedTodo: data
         }
       });
-
-     
     } catch (error) {
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_ERROR,
@@ -160,16 +158,14 @@ export default function TodosPage() {
       });
 
       const data = await response.json();
-     
+
       if (!response.ok) {
-        
         throw new Error(`Error: ${response.status} could not complete todo`);
       }
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS,
         payload: {id: data.id, fetchedTodo: data}
       });
-      
     } catch (error) {
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
@@ -212,10 +208,7 @@ export default function TodosPage() {
           id: data.id
         }
       });
-      
-      
     } catch (error) {
-      
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
         payload: {
