@@ -12,7 +12,6 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo}) {
     updateTitle,
     finishEdit
   } = useEditableTitle(todo.title);
-
   return (
     <li>
       <form
