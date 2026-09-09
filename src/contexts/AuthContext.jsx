@@ -2,6 +2,7 @@ import {createContext, useContext, useState} from "react";
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
 
@@ -15,9 +16,11 @@ export function useAuth() {
 export function AuthProvider({children}) {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
+  
 
   const login = async (userEmail, password) => {
     try {
+      
       const options = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -45,7 +48,7 @@ export function AuthProvider({children}) {
         success: false,
         error: "Network error during login"
       };
-    }
+    } 
   };
 
   const logout = async () => {
