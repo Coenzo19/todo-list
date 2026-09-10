@@ -8,8 +8,6 @@ export default function RequireAuth({children}) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // console.log('authenticating: '+authenticating);
-    // console.log('isAuthenticated: '+isAuthenticated);
 
     if (!isAuthenticated && !isAuthLoading) {
       navigate("/login", {replace: true, state: {from: location}});
