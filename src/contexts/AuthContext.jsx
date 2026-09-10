@@ -15,12 +15,12 @@ export function useAuth() {
 
 export function AuthProvider({children}) {
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
-  
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
 
   const login = async (userEmail, password) => {
     try {
-      
+      setIsAuthLoading(true);
       const options = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -33,9 +33,11 @@ export function AuthProvider({children}) {
 
       if (res.status === 200 && data.name && data.csrfToken) {
         // Success: Update state
-
+        console.log(data);
         setEmail(data.name);
         setToken(data.csrfToken);
+        localStorage.setItem("token", data.csrfToken);
+
         return {success: true};
       } else {
         return {
@@ -48,13 +50,16 @@ export function AuthProvider({children}) {
         success: false,
         error: "Network error during login"
       };
-    } 
+    } finally {
+      setIsAuthLoading(false);
+    }
   };
 
   const logout = async () => {
     if (!token) {
       setEmail("");
       setToken("");
+      localStorage.clear();
       return {success: true};
     }
 
@@ -80,10 +85,12 @@ export function AuthProvider({children}) {
     } finally {
       setEmail("");
       setToken("");
+      localStorage.setItem("token", "");
     }
   };
 
   const value = {
+    isAuthLoading,
     email,
     token,
     isAuthenticated: !!token,

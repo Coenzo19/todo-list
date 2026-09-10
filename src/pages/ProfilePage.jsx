@@ -63,7 +63,7 @@ export default function ProfilePage() {
             <p>{error}</p>
           ) : (
             <>
-              <p>email: {email}</p>
+              <p>name: {email}</p>
               <p>Token: {token}</p>
               <p>Total: {todoStats.total}</p>
               <p>Completed: {todoStats.completed}</p>
