@@ -35,6 +35,11 @@ export default function TodosPage() {
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
   useEffect(() => {
+
+if(!token){
+  return
+}
+
     async function fetchTodos() {
       const paramObject = {
         sortBy,

@@ -8,12 +8,14 @@ export default function Logoff() {
   const navigate = useNavigate();
 
   async function handleLogoff() {
+    
     setIsLoggingOff(true);
 
     const result = await logout();
 
     if (result.success) {
       navigate("/login");
+      
     } else {
       setIsLoggingOff(false);
     }
