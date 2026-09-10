@@ -14,7 +14,7 @@ export default function ProfilePage() {
   useEffect(() => {
     async function fetchTodoStats() {
       if (!token) {
-        console.log("entered");
+        
         return;
       }
 

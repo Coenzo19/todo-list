@@ -38,7 +38,7 @@ export const initialTodoState = {
 };
 
 export function todoReducer(state, action) {
-  console.log("Dispatched action:", action.type, action.payload);
+  
  
   switch (action.type) {
     case TODO_ACTIONS.FETCH_START:
