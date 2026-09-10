@@ -14,7 +14,8 @@ export function useAuth() {
 }
 
 export function AuthProvider({children}) {
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [email, setEmail] = useState(localStorage.getItem("email"));
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [isAuthLoading, setIsAuthLoading] = useState(false);
 
@@ -34,9 +35,12 @@ export function AuthProvider({children}) {
       if (res.status === 200 && data.name && data.csrfToken) {
         // Success: Update state
         console.log(data);
-        setEmail(data.name);
+        setName(data.name);
+        setEmail(data.email);
         setToken(data.csrfToken);
         localStorage.setItem("token", data.csrfToken);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("email", data.email);
 
         return {success: true};
       } else {
@@ -57,6 +61,7 @@ export function AuthProvider({children}) {
 
   const logout = async () => {
     if (!token) {
+      setName('');
       setEmail("");
       setToken("");
       localStorage.clear();
@@ -85,12 +90,14 @@ export function AuthProvider({children}) {
     } finally {
       setEmail("");
       setToken("");
-      localStorage.setItem("token", "");
+      setName('')
+      localStorage.clear();
     }
   };
 
   const value = {
     isAuthLoading,
+    name,
     email,
     token,
     isAuthenticated: !!token,

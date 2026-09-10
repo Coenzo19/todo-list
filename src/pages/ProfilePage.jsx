@@ -2,7 +2,7 @@ import {useAuth} from "../contexts/AuthContext";
 import {useState, useEffect} from "react";
 
 export default function ProfilePage() {
-  const {email, token} = useAuth();
+  const {name,email, token} = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [todoStats, setTodoStats] = useState({
@@ -56,14 +56,15 @@ export default function ProfilePage() {
   return (
     <div>
       {loading ? (
-        <p>Loading</p>
+        <h2>Loading...</h2>
       ) : (
         <>
           {error ? (
             <p>{error}</p>
           ) : (
             <>
-              <p>name: {email}</p>
+              <h2>Name:{name}</h2>
+              <p>Email: {email}</p>
               <p>Token: {token}</p>
               <p>Total: {todoStats.total}</p>
               <p>Completed: {todoStats.completed}</p>
