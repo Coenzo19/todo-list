@@ -7,6 +7,10 @@ export default function NotFoundPage() {
       <Link className="linkButton" to="/">
         Go Back
       </Link>
+      <Link className="linkButton" to="/about">
+        About
+      </Link>
+  
     </div>
   );
 }
