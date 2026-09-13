@@ -2,6 +2,7 @@ import {createContext, useContext, useState} from "react";
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
 
@@ -13,11 +14,14 @@ export function useAuth() {
 }
 
 export function AuthProvider({children}) {
-  const [email, setEmail] = useState("");
-  const [token, setToken] = useState("");
-
+  const [name, setName] = useState(localStorage.getItem("name"));
+  const [email, setEmail] = useState(localStorage.getItem("email"));
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
+  
   const login = async (userEmail, password) => {
     try {
+      setIsAuthLoading(true);
       const options = {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -31,8 +35,13 @@ export function AuthProvider({children}) {
       if (res.status === 200 && data.name && data.csrfToken) {
         // Success: Update state
 
-        setEmail(data.name);
+        setName(data.name);
+        setEmail(data.email);
         setToken(data.csrfToken);
+        localStorage.setItem("token", data.csrfToken);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("email", data.email);
+
         return {success: true};
       } else {
         return {
@@ -45,13 +54,17 @@ export function AuthProvider({children}) {
         success: false,
         error: "Network error during login"
       };
+    } finally {
+      setIsAuthLoading(false);
     }
   };
 
   const logout = async () => {
     if (!token) {
+      setName("");
       setEmail("");
       setToken("");
+      localStorage.clear();
       return {success: true};
     }
 
@@ -77,10 +90,14 @@ export function AuthProvider({children}) {
     } finally {
       setEmail("");
       setToken("");
+      setName("");
+      localStorage.clear();
     }
   };
 
   const value = {
+    isAuthLoading,
+    name,
     email,
     token,
     isAuthenticated: !!token,
