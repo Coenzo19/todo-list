@@ -62,12 +62,12 @@ export default function TodosPage() {
           throw new Error("unauthorized");
         }
         if (!response.ok) {
-          console.log(response);
+          
           throw new Error("error retrieving data");
         }
 
         const data = await response.json();
-        console.log(data);
+        
         
         
 
@@ -192,9 +192,7 @@ export default function TodosPage() {
   }
 
   async function deleteTodo(todo, index) {
-    console.log(todo);
-    console.log(index);
-    console.log("deleteTodo");
+    
     const deletedTodo = todoList.find((t) => t.id === todo.id);
     //optimistiacally delete todo
     dispatch({
@@ -210,12 +208,7 @@ export default function TodosPage() {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} could not delete todo`);
       }
-      //const data = await response.json();
-      console.log("successfully deleted");
-      // dispatch({
-      //   type: TODO_ACTIONS.DELETE_TODO_SUCCESS,
-      //   payload: {id: data.id}
-      // });
+  
     } catch (error) {
       console.log(deletedTodo);
       console.log(dataVersion);
