@@ -15,7 +15,7 @@ function StatusFilter() {
 
   return (
     <div className={classes['filter-text']}>
-      <label htmlFor="statusFilter">Show:</label>
+      <label htmlFor="statusFilter">Show</label>
       <select
       className={classes['filter-input']}
         id="statusFilter"

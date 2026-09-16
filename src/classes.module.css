@@ -85,6 +85,7 @@ text-align:center;
   padding: 5px;
   border: solid 2px #597928;
   border-radius: 5px;
+  margin-left:5px;
 }
 .filter-input:hover {
   background-color: rgb(215, 255, 227);
