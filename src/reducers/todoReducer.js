@@ -18,6 +18,10 @@ export const TODO_ACTIONS = {
   UPDATE_TODO_SUCCESS: "UPDATE_TODO_SUCCESS",
   UPDATE_TODO_ERROR: "UPDATE_TODO_ERROR",
 
+  DELETE_TODO_START: "DELETE_TODO_START",
+  DELETE_TODO_SUCCESS: "DELETE_TODO_SUCCESS",
+  DELETE_TODO_ERROR: "DELETE_TODO_ERROR",
+
   //Ui operations
   SET_SORT: "SET_SORT",
   SET_FILTER: "SET_FILTER",
@@ -38,8 +42,6 @@ export const initialTodoState = {
 };
 
 export function todoReducer(state, action) {
-  
- 
   switch (action.type) {
     case TODO_ACTIONS.FETCH_START:
       return {
@@ -88,6 +90,7 @@ export function todoReducer(state, action) {
         ),
         error: action.payload.message
       };
+
     case TODO_ACTIONS.COMPLETE_TODO_START:
       return {
         ...state,
@@ -102,7 +105,7 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
       return {
         ...state,
-        
+
         dataVersion: state.dataVersion + 1,
         todoList: state.todoList.map((todo) => {
           if (todo.id === action.payload.id) {
@@ -111,6 +114,7 @@ export function todoReducer(state, action) {
           return todo;
         })
       };
+
     case TODO_ACTIONS.COMPLETE_TODO_ERROR:
       return {
         ...state,
@@ -122,6 +126,7 @@ export function todoReducer(state, action) {
         }),
         error: action.payload.message
       };
+
     case TODO_ACTIONS.UPDATE_TODO_START:
       return {
         ...state,
@@ -155,6 +160,31 @@ export function todoReducer(state, action) {
         }),
         error: action.payload.message
       };
+    //optmistically delete todo at start
+    case TODO_ACTIONS.DELETE_TODO_START:
+      return {
+        ...state,
+        todoList: state.todoList.filter((todo) => todo.id != action.payload.id)
+      };
+    //update server side to delete it's version of the todo
+    case TODO_ACTIONS.DELETE_TODO_SUCCESS:
+      return {
+        ...state,
+        dataVersion: state.dataVersion + 1,
+        todoList: state.todoList.filter((todo) => todo.id != action.payload.id)
+      };
+    //return the deleted todo to the spot it was deleted from
+    case TODO_ACTIONS.DELETE_TODO_ERROR: {
+      const array = [...state.todoList];
+      array.splice(action.payload.index, 0, action.payload.deletedTodo);
+      return {
+        ...state,
+        dataVersion:state.dataVersion+1,
+        todoList: array,
+        error: action.payload.message
+      };
+    }
+
     case TODO_ACTIONS.SET_SORT:
       return {
         ...state,

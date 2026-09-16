@@ -2,8 +2,9 @@
 import TextInputWithLabel from "../../../shared/TextInputWithLabel.jsx";
 import {isValidTodoTitle} from "../../../utils/todoValidation.js";
 import {useEditableTitle} from "../../../hooks/useEditableTitle";
+import classes from "../../../classes.module.css";
 
-function TodoListItem({onUpdateTodo, todo, onCompleteTodo}) {
+function TodoListItem({onUpdateTodo, todo, onCompleteTodo, deleteTodo, index}) {
   const {
     isEditing,
     workingTitle,
@@ -13,7 +14,7 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo}) {
     finishEdit
   } = useEditableTitle(todo.title);
   return (
-    <li>
+    <li className={classes["todo-item"]}>
       <form
         onSubmit={(event) => {
           if (!isEditing) return;
@@ -23,31 +24,47 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo}) {
         }}
       >
         {isEditing ? (
-          <>
+          <div className={classes["editing-container"]}>
             <TextInputWithLabel
+              classNameInput={classes["editing-input"]}
               value={workingTitle}
               onChange={(event) => updateTitle(event.target.value)}
             />
-            <button type="button" onClick={cancelEdit}>
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={(event) => {
-                if (!isEditing) return;
-                event.preventDefault();
-                const finalTitle = finishEdit();
-                onUpdateTodo({...todo, title: finalTitle});
-              }}
-              disabled={!isValidTodoTitle(workingTitle)}
-            >
-              Update
-            </button>
-          </>
+            <div className={classes["editing-btn-container"]}>
+              <button
+                className={classes["editing-btn"]}
+                type="button"
+                onClick={cancelEdit}
+              >
+                Cancel
+              </button>
+              <button
+                className={classes["editing-btn"]}
+                type="button"
+                onClick={() => deleteTodo(todo, index)}
+              >
+                Delete
+              </button>
+              <button
+                className={classes["editing-btn"]}
+                type="button"
+                onClick={(event) => {
+                  if (!isEditing) return;
+                  event.preventDefault();
+                  const finalTitle = finishEdit();
+                  onUpdateTodo({...todo, title: finalTitle});
+                }}
+                disabled={!isValidTodoTitle(workingTitle)}
+              >
+                Update
+              </button>
+            </div>
+          </div>
         ) : (
           <>
             <label>
               <input
+                className={classes["checkbox"]}
                 type="checkbox"
                 checked={todo.isCompleted}
                 onChange={() => onCompleteTodo(todo.id)}

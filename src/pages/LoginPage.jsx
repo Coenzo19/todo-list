@@ -1,11 +1,13 @@
 import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router";
 import {useAuth} from "../contexts/AuthContext";
-
+import classes from "../classes.module.css";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [isLoggingOn, setIsLoggingOn] = useState(false);
   const {login, isAuthenticated} = useAuth();
   const navigate = useNavigate();
@@ -21,6 +23,19 @@ export default function LoginPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setAuthError("");
+    setEmailError("");
+    setPasswordError("");
+
+    if (email.length > 30) {
+      setEmailError("Email is too long");
+      return
+    }
+    if (password.length > 30) {
+      setPasswordError("Password is too long");
+      return
+    }
+    
     try {
       setIsLoggingOn(true);
 
@@ -36,25 +51,48 @@ export default function LoginPage() {
     }
   }
   return (
-    <form onSubmit={handleSubmit}>
-      {authError && <p>{authError}</p>}
-      <label htmlFor="email">Email</label>
+    //sanitize and validate input
+
+    <form onSubmit={handleSubmit} className={classes["login-container"]}>
+      {authError && (
+        <p
+          className={classes["auth-error"]}
+        >{`${authError}. Please check that your username or email is correct`}</p>
+      )}
+      <label className={classes["login-labels"]} htmlFor="email">
+        Email
+      </label>
       <input
+        className={classes["input-field"]}
         type="email"
         required
         id="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <label htmlFor="password">Password</label>
+      <span className={classes["validation-error"]}>
+        {emailError && emailError}
+      </span>
+
+      <label className={classes["login-labels"]} htmlFor="password">
+        Password
+      </label>
       <input
+        className={classes["input-field"]}
         type="password"
         required
         id="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button type="submit" disabled={isLoggingOn}>
+      <span className={classes["validation-error"]}>
+        {passwordError && passwordError}
+      </span>
+      <button
+        className={classes["logOn-button"]}
+        type="submit"
+        disabled={isLoggingOn}
+      >
         {isLoggingOn ? "Logging In..." : "Log On"}
       </button>
     </form>

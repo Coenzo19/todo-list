@@ -7,6 +7,7 @@ import FilterInput from "../shared/FilterInput.jsx";
 import {useAuth} from "../contexts/AuthContext.jsx";
 import {useSearchParams} from "react-router";
 import StatusFilter from "../shared/StatusFilter.jsx";
+import classes from "../classes.module.css";
 
 import {
   todoReducer,
@@ -35,10 +36,9 @@ export default function TodosPage() {
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
   useEffect(() => {
-
-if(!token){
-  return
-}
+    if (!token) {
+      return;
+    }
 
     async function fetchTodos() {
       const paramObject = {
@@ -62,10 +62,14 @@ if(!token){
           throw new Error("unauthorized");
         }
         if (!response.ok) {
+          
           throw new Error("error retrieving data");
         }
 
         const data = await response.json();
+        
+        
+        
 
         dispatch({
           type: TODO_ACTIONS.FETCH_SUCCESS,
@@ -80,7 +84,7 @@ if(!token){
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
             payload: {
-              message: `Error filtering/sorting todos: ${error.message}`
+              message: `Error filtering/sorting todos: Todo not found`
             }
           });
         } else {
@@ -123,8 +127,9 @@ if(!token){
         credentials: "include",
         body: JSON.stringify(payload)
       });
+
       if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(response.status);
       }
 
       const data = await response.json();
@@ -141,7 +146,7 @@ if(!token){
         type: TODO_ACTIONS.ADD_TODO_ERROR,
         payload: {
           id: newTodo.id,
-          message: "Could not add Todo"
+          message: `Error: ${error.message}, could not complete action`
         }
       });
     }
@@ -180,6 +185,38 @@ if(!token){
         type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
         payload: {
           originalTodo: originalTodo,
+          message: error.message
+        }
+      });
+    }
+  }
+
+  async function deleteTodo(todo, index) {
+    
+    const deletedTodo = todoList.find((t) => t.id === todo.id);
+    //optimistiacally delete todo
+    dispatch({
+      type: TODO_ACTIONS.DELETE_TODO_START,
+      payload: {id: todo.id}
+    });
+    try {
+      const response = await fetch(`/api/tasks/${todo.id}`, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
+        credentials: "include"
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} could not delete todo`);
+      }
+  
+    } catch (error) {
+      console.log(deletedTodo);
+      console.log(dataVersion);
+      dispatch({
+        type: TODO_ACTIONS.DELETE_TODO_ERROR,
+        payload: {
+          deletedTodo: deletedTodo,
+          index: index,
           message: error.message
         }
       });
@@ -230,35 +267,45 @@ if(!token){
 
   return (
     <div>
-      <SortBy
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSortByChange={(value) =>
-          dispatch({
-            type: TODO_ACTIONS.SET_SORT,
-            payload: {sortBy: value, sortDirection: sortDirection}
-          })
-        }
-        onSortDirectionChange={(value) =>
-          dispatch({
-            type: TODO_ACTIONS.SET_SORT,
-            payload: {sortBy: sortBy, sortDirection: value}
-          })
-        }
+      <div className={classes["filter-container"]}>
+        <SortBy
+          sortBy={sortBy}
+          sortDirection={sortDirection}
+          onSortByChange={(value) =>
+            dispatch({
+              type: TODO_ACTIONS.SET_SORT,
+              payload: {sortBy: value, sortDirection: sortDirection}
+            })
+          }
+          onSortDirectionChange={(value) =>
+            dispatch({
+              type: TODO_ACTIONS.SET_SORT,
+              payload: {sortBy: sortBy, sortDirection: value}
+            })
+          }
+        />
+        <StatusFilter />
+      </div>
+      <FilterInput
+        filterTerm={filterTerm}
+        onFilterChange={handleFilterChange}
       />
-      <StatusFilter />
       {error && (
-        <>
+        <div className={classes["error"]}>
           <p>{error}</p>
-          <button onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}>
+          <button
+            className={classes["error-btn"]}
+            onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}
+          >
             Clear Error
           </button>
-        </>
+        </div>
       )}
       {filterError && (
-        <div>
+        <div className={classes["error"]}>
           <p>{filterError}</p>
           <button
+            className={classes["error-btn"]}
             onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_FILTER_ERROR})}
           >
             Clear Filter Error
@@ -272,14 +319,12 @@ if(!token){
           </button>
         </div>
       )}
-      <FilterInput
-        filterTerm={filterTerm}
-        onFilterChange={handleFilterChange}
-      />
-      {isTodoListLoading && <h2>Loading</h2>}
 
       <TodoForm onAddTodo={addTodo} />
+      {isTodoListLoading && <h2 className={classes["loading"]}>Loading</h2>}
       <TodoList
+        isTodoListLoading={isTodoListLoading}
+        deleteTodo={deleteTodo}
         onUpdateTodo={updateTodo}
         todoList={state.todoList}
         onCompleteTodo={completeTodo}

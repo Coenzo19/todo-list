@@ -1,8 +1,18 @@
-function TextInputWithLabel({elementId, labelText, onChange, ref, value}) {
+function TextInputWithLabel({
+  elementId,
+  labelText,
+  onChange,
+  ref,
+  value,
+  classNameText,
+  classNameInput
+}) {
   return (
+    //add sanitation
     <>
-      <label htmlFor={elementId}>{labelText}</label>
+      <label className={classNameText} htmlFor={elementId}>{labelText}</label>
       <input
+        className={classNameInput}
         type="text"
         id={elementId}
         ref={ref}

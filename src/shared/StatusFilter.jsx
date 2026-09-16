@@ -1,5 +1,5 @@
 import {useSearchParams} from "react-router";
-
+import classes from "../classes.module.css";
 function StatusFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentStatus = searchParams.get("status") || "all";
@@ -14,17 +14,17 @@ function StatusFilter() {
   };
 
   return (
-    <div>
-      <label htmlFor="statusFilter">Show:</label>
+    <div className={classes['filter-text']}>
+      <label htmlFor="statusFilter">Show</label>
       <select
+      className={classes['filter-input']}
         id="statusFilter"
         value={currentStatus}
         onChange={(e) => handleStatusChange(e.target.value)}
       >
-<option value="all">All Todos</option>
-<option value="active">Active Todos</option>
-<option value="completed">Completed Todos</option>
-        
+        <option value="all">All Todos</option>
+        <option value="active">Active Todos</option>
+        <option value="completed">Completed Todos</option>
       </select>
     </div>
   );

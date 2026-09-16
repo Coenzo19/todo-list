@@ -1,15 +1,19 @@
 import TodoListItem from "./TodoListItem.jsx";
+import classes from "../../../classes.module.css";
 import {useMemo} from "react";
 
+
 function TodoList({
+  isTodoListLoading,
   onUpdateTodo,
+  deleteTodo,
   todoList,
   onCompleteTodo,
   dataVersion,
   statusFilter = "active"
 }) {
+ 
   const filteredTodoList = useMemo(() => {
-    
     let filteredTodos;
 
     switch (statusFilter) {
@@ -46,15 +50,17 @@ function TodoList({
 
   return (
     <>
-      {filteredTodoList.todos.length === 0 ? (
-        <p>{getEmptyMessage()}</p>
+      {filteredTodoList.todos.length === 0 && !isTodoListLoading ? (
+        <p className={classes['empty-message']}>{getEmptyMessage()}</p>
       ) : (
-        <ul>
-          {filteredTodoList.todos.map((todo) => (
+        <ul className={classes['list']}>
+          {filteredTodoList.todos.map((todo,index) => (
             <TodoListItem
+              deleteTodo={deleteTodo}
               onUpdateTodo={onUpdateTodo}
               key={todo.id}
               todo={todo}
+              index={index}
               onCompleteTodo={onCompleteTodo}
             />
           ))}

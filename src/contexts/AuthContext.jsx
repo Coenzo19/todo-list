@@ -38,6 +38,7 @@ export function AuthProvider({children}) {
         setName(data.name);
         setEmail(data.email);
         setToken(data.csrfToken);
+        //stored only for data persistence between reloads in this demo until I get an backend that refreshes a token or lets me know if a user is still authenticated
         localStorage.setItem("token", data.csrfToken);
         localStorage.setItem("name", data.name);
         localStorage.setItem("email", data.email);
