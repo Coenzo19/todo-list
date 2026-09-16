@@ -1,6 +1,8 @@
 import {useAuth} from "../contexts/AuthContext.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router";
+import classes from "../classes.module.css";
+
 
 export default function Logoff() {
   const [isLoggingOff, setIsLoggingOff] = useState(false);
@@ -22,7 +24,7 @@ export default function Logoff() {
   }
 
   return (
-    <button onClick={handleLogoff} disabled={isLoggingOff}>
+    <button className={classes["logoff-btn"]} onClick={handleLogoff} disabled={isLoggingOff}>
       {isLoggingOff ? "Logging out" : "Log Off"}
     </button>
   );

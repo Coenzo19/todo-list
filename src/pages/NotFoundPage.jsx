@@ -1,27 +1,30 @@
 import {Link} from "react-router";
 import {useAuth} from "../contexts/AuthContext";
+import classes from "../classes.module.css";
 export default function NotFoundPage() {
   const {isAuthenticated} = useAuth();
   return (
-    <div>
-      <h2>404: Not Found</h2>
-      <Link className="linkButton" to="/">
-        Go Back
-      </Link>
-      <Link className="linkButton" to="/about">
-        About
-      </Link>
+    <>
+      <h2 className={classes["not-found-error"]}>404: Not Found</h2>
+      <div className={classes["not-found-links"]}>
+        <Link className={classes["link-btn"]} to="/">
+          Go Back
+        </Link>
+        <Link className={classes["link-btn"]} to="/about">
+          About
+        </Link>
 
-      {isAuthenticated && (
-        <>
-          <Link className="linkButton" to="/profile">
-            Profile
-          </Link>
-          <Link className="linkButton" to="/todos">
-            Todos
-          </Link>
-        </>
-      )}
-    </div>
+        {isAuthenticated && (
+          <>
+            <Link className={classes["link-btn"]} to="/profile">
+              Profile
+            </Link>
+            <Link className={classes["link-btn"]} to="/todos">
+              Todos
+            </Link>
+          </>
+        )}
+      </div>
+    </>
   );
 }

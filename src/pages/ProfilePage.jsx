@@ -1,8 +1,9 @@
 import {useAuth} from "../contexts/AuthContext";
 import {useState, useEffect} from "react";
+import classes from "../classes.module.css";
 
 export default function ProfilePage() {
-  const {name,email, token} = useAuth();
+  const {name, email, token} = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [todoStats, setTodoStats] = useState({
@@ -14,7 +15,6 @@ export default function ProfilePage() {
   useEffect(() => {
     async function fetchTodoStats() {
       if (!token) {
-        
         return;
       }
 
@@ -54,9 +54,9 @@ export default function ProfilePage() {
   }, [token]);
 
   return (
-    <div>
+    <div className={classes['profile']}>
       {loading ? (
-        <h2>Loading...</h2>
+        <h2 className={classes["loading"]}>Loading...</h2>
       ) : (
         <>
           {error ? (
@@ -65,10 +65,9 @@ export default function ProfilePage() {
             <>
               <h2>Name:{name}</h2>
               <p>Email: {email}</p>
-              <p>Token: {token}</p>
               <p>Total: {todoStats.total}</p>
-              <p>Completed: {todoStats.completed}</p>
-              <p>Active: {todoStats.active}</p>
+              <p>Completed Todos: {todoStats.completed}</p>
+              <p>Active Todos: {todoStats.active}</p>
               {todoStats.total !== 0 && (
                 <p>
                   Completion Percentage:
