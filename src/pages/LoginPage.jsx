@@ -29,13 +29,13 @@ export default function LoginPage() {
 
     if (email.length > 30) {
       setEmailError("Email is too long");
+      return
     }
     if (password.length > 30) {
       setPasswordError("Password is too long");
+      return
     }
-    if (passwordError || emailError) {
-      return;
-    }
+    
     try {
       setIsLoggingOn(true);
 
