@@ -2,6 +2,9 @@
 
 A Demo To-do List application built with React featuring adding, editing, deleting and filtering todos.This Demo demonstrates proficiency in React hooks, state management, component architecture, and responsive design, and error handling with custom validation and extra validation behind the scenes
 
+## Live Demo Link
+Deployment is optional for this project, so no live demo is available.
+
 ## Screenshots
 ![Login page](./screenshots/img1.png)
 ![TodosPage](./screenshots/img2.png)
@@ -44,9 +47,22 @@ you should see a link that reads like this:
 
 open the link printed in the console rather than hard-coding a port.
 
-## Design Principle
+# Available Scripts
 
-When designing this app, I wanted a User Interface with contasting colors that didn't blend together. It need to be easy to view, buttons or interactive elements need to be large and make it obvious what their purpose is.
+**npm install** — installs dependencies
+
+**npm run dev** — starts the local development server
+
+**npm run build** — creates the production build
+
+**npm run preview** — previews the production build locally
+
+
+## Design Decision
+
+When designing this app, I used strong contrasting colors so text stays readable against the background. I chose green, light green, brown, and peach because they stand out from one another and create clear visual separation. I added spacing between text elements to make the page easier to scan, and I made sure borders and buttons do not blend in with surrounding content.
+
+I also made buttons and other interactive elements large enough for mobile users and added focus states to improve accessibility.
 
 ## Future Improvements
 
@@ -54,5 +70,18 @@ When designing this app, I wanted a User Interface with contasting colors that d
 - **Robust rollbacks**: Adding stronger rollback functionality when multiple todos are changed in rapid succession
 - **further CSS styling**: Tweaking elements to align better and adjusting more for mobile
 
-## Future Improvements
-If you are curious about my journey, check me out at https://github.com/Coenzo19
+## Contact Information
+- **GitHub** https://github.com/Coenzo19
+
+- **Portfolio:** https://www.artstation.com/rromero16
+
+
+## License Information
+
+Copyright (c) 2026 Renzo Romero
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
