@@ -45,7 +45,7 @@ export default function ProfilePage() {
 
         setTodoStats({total, completed, active});
       } catch (err) {
-        setError(`Error loading statistics: ${err.message}`);
+        setError(`Failed to load statistics, Try logging back in and make sure you have Todos to display`);
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,7 @@ export default function ProfilePage() {
       ) : (
         <>
           {error ? (
-            <p>{error}</p>
+            <p className={classes['error']}>{error}</p>
           ) : (
             <>
               <h2>Name:{name}</h2>

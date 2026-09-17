@@ -62,14 +62,10 @@ export default function TodosPage() {
           throw new Error("unauthorized");
         }
         if (!response.ok) {
-          
           throw new Error("error retrieving data");
         }
 
         const data = await response.json();
-        
-        
-        
 
         dispatch({
           type: TODO_ACTIONS.FETCH_SUCCESS,
@@ -99,6 +95,14 @@ export default function TodosPage() {
   }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
   const handleFilterChange = (newTerm) => {
+    if (newTerm.trim().length >= 30) {
+      dispatch({
+        type: TODO_ACTIONS.VALIDATION_ERROR,
+        payload: {message: "You've exceeded the maximum character length"}
+      });
+      return;
+    }
+
     dispatch({
       type: TODO_ACTIONS.SET_FILTER,
       payload: {filterTerm: newTerm}
@@ -192,9 +196,8 @@ export default function TodosPage() {
   }
 
   async function deleteTodo(todo, index) {
-    
     const deletedTodo = todoList.find((t) => t.id === todo.id);
-    //optimistiacally delete todo
+    
     dispatch({
       type: TODO_ACTIONS.DELETE_TODO_START,
       payload: {id: todo.id}
@@ -208,10 +211,8 @@ export default function TodosPage() {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} could not delete todo`);
       }
-  
     } catch (error) {
-      console.log(deletedTodo);
-      console.log(dataVersion);
+
       dispatch({
         type: TODO_ACTIONS.DELETE_TODO_ERROR,
         payload: {
@@ -301,6 +302,7 @@ export default function TodosPage() {
           </button>
         </div>
       )}
+
       {filterError && (
         <div className={classes["error"]}>
           <p>{filterError}</p>
@@ -311,6 +313,7 @@ export default function TodosPage() {
             Clear Filter Error
           </button>
           <button
+            className={classes["error-btn"]}
             onClick={() => {
               dispatch({type: TODO_ACTIONS.RESET_FILTERS});
             }}
@@ -321,7 +324,7 @@ export default function TodosPage() {
       )}
 
       <TodoForm onAddTodo={addTodo} />
-      {isTodoListLoading && <h2 className={classes["loading"]}>Loading</h2>}
+      {isTodoListLoading && <h2 className={classes["loading"]}>Loading...</h2>}
       <TodoList
         isTodoListLoading={isTodoListLoading}
         deleteTodo={deleteTodo}

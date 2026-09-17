@@ -57,7 +57,7 @@ export default function LoginPage() {
       {authError && (
         <p
           className={classes["auth-error"]}
-        >{`${authError}. Please check that your username or email is correct`}</p>
+        >{`Please check that your username or email is correct`}</p>
       )}
       <label className={classes["login-labels"]} htmlFor="email">
         Email

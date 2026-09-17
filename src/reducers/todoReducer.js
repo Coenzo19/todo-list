@@ -27,7 +27,8 @@ export const TODO_ACTIONS = {
   SET_FILTER: "SET_FILTER",
   CLEAR_ERROR: "CLEAR_ERROR",
   CLEAR_FILTER_ERROR: "CLEAR_FILTER_ERROR",
-  RESET_FILTERS: "RESET_FILTERS"
+  RESET_FILTERS: "RESET_FILTERS",
+  VALIDATION_ERROR: "VALIDATION_ERROR"
 };
 
 export const initialTodoState = {
@@ -60,6 +61,7 @@ export function todoReducer(state, action) {
       return {
         ...state,
         error: action.payload.message,
+        filterError:'',
         isTodoListLoading: false
       };
 
@@ -179,7 +181,7 @@ export function todoReducer(state, action) {
       array.splice(action.payload.index, 0, action.payload.deletedTodo);
       return {
         ...state,
-        dataVersion:state.dataVersion+1,
+        dataVersion: state.dataVersion + 1,
         todoList: array,
         error: action.payload.message
       };
@@ -196,6 +198,13 @@ export function todoReducer(state, action) {
       return {
         ...state,
         filterTerm: action.payload.filterTerm
+      };
+    case TODO_ACTIONS.VALIDATION_ERROR:
+      return {
+        ...state,
+        error:'',
+        filterError: action.payload.message
+        
       };
     case TODO_ACTIONS.RESET_FILTERS:
       return {

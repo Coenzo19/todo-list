@@ -30,6 +30,11 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo, deleteTodo, index}) {
               value={workingTitle}
               onChange={(event) => updateTitle(event.target.value)}
             />
+            {workingTitle.length > 100 && (
+              <p className={classes["error"]}>
+                Your task has exceeded the maximum character limit
+              </p>
+            )}
             <div className={classes["editing-btn-container"]}>
               <button
                 className={classes["editing-btn"]}
@@ -54,7 +59,9 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo, deleteTodo, index}) {
                   const finalTitle = finishEdit();
                   onUpdateTodo({...todo, title: finalTitle});
                 }}
-                disabled={!isValidTodoTitle(workingTitle)}
+                disabled={
+                  !isValidTodoTitle(workingTitle) || workingTitle.length > 100
+                }
               >
                 Update
               </button>
