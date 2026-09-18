@@ -7,10 +7,17 @@ A Demo To-do List application built with React featuring adding, editing, deleti
 Deployment is optional for this project, so no live demo is available.
 
 ## Screenshots
+**Desktop**
 
-![Login page](./screenshots/img1.png)
-![TodosPage](./screenshots/img2.png)
-![Mobile example](./screenshots/img3.png)
+![Desktop Login page](./screenshots/Desktop01.png)
+![Desktop Login page](./screenshots/Desktop02.png)
+
+
+**Mobile**
+
+![Mobile Login page](./screenshots/Mobile01.png)
+![Mobile Login page](./screenshots/Mobile02.png)
+
 
 # Feature List
 
@@ -69,6 +76,8 @@ I used strong contrasting colors so text elements remain distinguishable and rea
 The heading establishes the app’s purpose and provides clear navigation at the top of the page.
 
 I designed the layout to adapt to smaller screens by using media queries to adjust the layout for mobile when a certain width threshold is met. Some examples are organizing link layouts and filters into columns, and adjusting font sizes to make the app compact for mobile. I kept the layout intentionally simple so the interface remains focused and easy to use.
+
+I used a text sanitizer for todo input to remove unsupported characters and keep displayed content consistent, but I kept login validation separate to avoid changing password values.
 
 ## Future Improvements
 

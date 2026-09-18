@@ -2,15 +2,17 @@ import {useState, useEffect} from "react";
 import {useNavigate, useLocation} from "react-router";
 import {useAuth} from "../contexts/AuthContext";
 import classes from "../classes.module.css";
+import {sanitizeText} from "../utils/sanitizeText";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const [isLoggingOn, setIsLoggingOn] = useState(false);
   const {login, isAuthenticated} = useAuth();
+  const cleanedEmail = sanitizeText(email);
+  const cleanedPassword = sanitizeText(password);
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/todos";
 
   useEffect(() => {
@@ -22,28 +24,41 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     setAuthError("");
-
-    if (email.length > 30) {
+    if (typeof cleanedEmail != "string") {
+      setAuthError("Email must be text");
+      return;
+    }
+    if (cleanedEmail.length > 30) {
       setAuthError("Email must be 30 characters or fewer");
       return;
     }
-    if (password.length > 30) {
+    if (cleanedEmail.length < 1) {
+      setAuthError("Email is required");
+      return;
+    }
+    if (typeof cleanedPassword != "string") {
+      setAuthError("Password must be text");
+      return;
+    }
+    if (cleanedPassword.length > 30) {
       setAuthError("Password must be 30 characters or fewer");
       return;
     }
-    
-    
+    if (cleanedPassword.length < 1) {
+      setAuthError("Password is required");
+      return;
+    }
 
     try {
       setIsLoggingOn(true);
 
-      const result = await login(email, password);
+      const result = await login(cleanedEmail, cleanedPassword);
 
       if (result.success === false) {
         setAuthError(result.error);
       }
     } catch (error) {
-      setAuthError(`Error: ${error.name} | ${error.message}`);
+      setAuthError(`Error: Unable to log in. Please try again.`);
     } finally {
       setIsLoggingOn(false);
     }
@@ -87,7 +102,7 @@ export default function LoginPage() {
       <button
         className={classes["logOn-button"]}
         type="submit"
-        disabled={isLoggingOn || email.length > 30 || password.length>30}
+        disabled={isLoggingOn || email.length > 30 || password.length > 30}
       >
         {isLoggingOn ? "Logging In..." : "Log On"}
       </button>
