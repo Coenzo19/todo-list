@@ -10,7 +10,7 @@ export default function SortBy({
       <div className={classes['filter-text']}>
         <label htmlFor="sortBy">Sort by</label>
         <select
-        className={classes['filter-input']}
+        className={classes['select-btn']}
           value={sortBy}
           onChange={(e) => onSortByChange(e.target.value)}
           id="sortBy"
@@ -22,7 +22,7 @@ export default function SortBy({
       <div className={classes['filter-text']}>
         <label htmlFor="order">Order</label>
         <select
-        className={classes['filter-input']}
+        className={classes['select-btn']}
           value={sortDirection}
           onChange={(e) => onSortDirectionChange(e.target.value)}
           id="order"

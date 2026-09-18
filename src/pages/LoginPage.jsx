@@ -6,8 +6,6 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
   const [isLoggingOn, setIsLoggingOn] = useState(false);
   const {login, isAuthenticated} = useAuth();
   const navigate = useNavigate();
@@ -24,18 +22,18 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     setAuthError("");
-    setEmailError("");
-    setPasswordError("");
 
     if (email.length > 30) {
-      setEmailError("Email is too long");
-      return
+      setAuthError("Email must be 30 characters or fewer");
+      return;
     }
     if (password.length > 30) {
-      setPasswordError("Password is too long");
-      return
+      setAuthError("Password must be 30 characters or fewer");
+      return;
     }
     
+    
+
     try {
       setIsLoggingOn(true);
 
@@ -51,8 +49,6 @@ export default function LoginPage() {
     }
   }
   return (
-    //sanitize and validate input
-
     <form onSubmit={handleSubmit} className={classes["login-container"]}>
       {authError && (
         <p
@@ -71,7 +67,7 @@ export default function LoginPage() {
         onChange={(e) => setEmail(e.target.value)}
       />
       <span className={classes["validation-error"]}>
-        {emailError && emailError}
+        {email.length > 30 && <p>Email must be 30 characters or fewer</p>}
       </span>
 
       <label className={classes["login-labels"]} htmlFor="password">
@@ -86,12 +82,12 @@ export default function LoginPage() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <span className={classes["validation-error"]}>
-        {passwordError && passwordError}
+        {password.length > 30 && <p>Password must be 30 characters or fewer</p>}
       </span>
       <button
         className={classes["logOn-button"]}
         type="submit"
-        disabled={isLoggingOn}
+        disabled={isLoggingOn || email.length > 30 || password.length>30}
       >
         {isLoggingOn ? "Logging In..." : "Log On"}
       </button>
