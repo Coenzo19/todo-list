@@ -28,7 +28,8 @@ export const TODO_ACTIONS = {
   CLEAR_ERROR: "CLEAR_ERROR",
   CLEAR_FILTER_ERROR: "CLEAR_FILTER_ERROR",
   RESET_FILTERS: "RESET_FILTERS",
-  VALIDATION_ERROR: "VALIDATION_ERROR"
+  VALIDATION_ERROR: "VALIDATION_ERROR",
+  GENERIC_ERROR: "GENERIC_ERROR"
 };
 
 export const initialTodoState = {
@@ -205,6 +206,14 @@ export function todoReducer(state, action) {
         error: "",
         filterError: action.payload.message
       };
+
+      case TODO_ACTIONS.GENERIC_ERROR:
+      return {
+        ...state,
+        error: action.payload.message,
+        filterError: ""
+      };
+
     case TODO_ACTIONS.RESET_FILTERS:
       return {
         ...state,

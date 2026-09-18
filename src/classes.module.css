@@ -61,8 +61,8 @@ body {
   justify-content: center;
   flex-direction: column;
   background-color: #597928;
-  padding: 36px;
-  margin: 5% 20%;
+  padding: 3rem;
+  margin: 5em 25%;
   border-radius: 10px;
 }
 .login-labels {
@@ -181,7 +181,9 @@ body {
   text-align: center;
 }
 .list {
-  list-style-type: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 .error {
   color: red;
@@ -237,5 +239,8 @@ body {
   .editing-input {
     padding: 10px 0;
     font-size: 24px;
+  }
+  .login-container{
+    margin:5em;
   }
 }

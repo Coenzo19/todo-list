@@ -7,6 +7,8 @@ import FilterInput from "../shared/FilterInput.jsx";
 import {useAuth} from "../contexts/AuthContext.jsx";
 import {useSearchParams} from "react-router";
 import StatusFilter from "../shared/StatusFilter.jsx";
+import {sanitizeText} from "../utils/sanitizeText.js";
+import {isValidTodoTitle} from "../utils/todoValidation.js";
 import classes from "../classes.module.css";
 
 import {
@@ -95,7 +97,9 @@ export default function TodosPage() {
   }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
   const handleFilterChange = (newTerm) => {
-    if (newTerm.trim().length >= 30) {
+    const cleanedInput = sanitizeText(newTerm);
+
+    if (cleanedInput.length >= 30) {
       dispatch({
         type: TODO_ACTIONS.VALIDATION_ERROR,
         payload: {message: "You've exceeded the maximum character length"}
@@ -105,7 +109,7 @@ export default function TodosPage() {
 
     dispatch({
       type: TODO_ACTIONS.SET_FILTER,
-      payload: {filterTerm: newTerm}
+      payload: {filterTerm: cleanedInput}
     });
   };
 
@@ -197,7 +201,7 @@ export default function TodosPage() {
 
   async function deleteTodo(todo, index) {
     const deletedTodo = todoList.find((t) => t.id === todo.id);
-    
+
     dispatch({
       type: TODO_ACTIONS.DELETE_TODO_START,
       payload: {id: todo.id}
@@ -212,7 +216,6 @@ export default function TodosPage() {
         throw new Error(`Error: ${response.status} could not delete todo`);
       }
     } catch (error) {
-
       dispatch({
         type: TODO_ACTIONS.DELETE_TODO_ERROR,
         payload: {
@@ -225,44 +228,66 @@ export default function TodosPage() {
   }
 
   async function updateTodo(editedTodo) {
+    const cleanedInput = sanitizeText(editedTodo.title);
     const oldTodo = todoList.find((todo) => todo.id === editedTodo.id);
 
     if (!oldTodo) {
       return;
     }
+    const validationResult = isValidTodoTitle(cleanedInput);
 
-    dispatch({type: TODO_ACTIONS.UPDATE_TODO_START, payload: editedTodo});
-    try {
-      const payload = {
-        title: editedTodo.title,
-        isCompleted: editedTodo.isCompleted
-      };
-      const response = await fetch(`/api/tasks/${editedTodo.id}`, {
-        method: "PATCH",
-        headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
-        credentials: "include",
-        body: JSON.stringify(payload)
+    if (validationResult === "too-long") {
+      dispatch({
+        type: TODO_ACTIONS.GENERIC_ERROR,
+        payload: {message: "Task must be 100 characters or less"}
       });
-      const data = await response.json();
+    } else if (validationResult === "required") {
+      dispatch({
+        type: TODO_ACTIONS.GENERIC_ERROR,
+        payload: {message: "Task title is required"}
+      });
+    } else if (validationResult === "invalid-type") {
+      dispatch({
+        type: TODO_ACTIONS.GENERIC_ERROR,
+        payload: {message: "Task must be text"}
+      });
+    } else {
+      dispatch({
+        type: TODO_ACTIONS.UPDATE_TODO_START,
+        payload: {title: cleanedInput, id: editedTodo.id}
+      });
+      try {
+        const payload = {
+          title: cleanedInput,
+          isCompleted: editedTodo.isCompleted
+        };
+        const response = await fetch(`/api/tasks/${editedTodo.id}`, {
+          method: "PATCH",
+          headers: {"Content-Type": "application/json", "X-CSRF-TOKEN": token},
+          credentials: "include",
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}, could not edit Todo`);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}, could not edit Todo`);
+        }
+        dispatch({
+          type: TODO_ACTIONS.UPDATE_TODO_SUCCESS,
+          payload: {
+            fetchedTodo: data,
+            id: data.id
+          }
+        });
+      } catch (error) {
+        dispatch({
+          type: TODO_ACTIONS.UPDATE_TODO_ERROR,
+          payload: {
+            oldTodo: oldTodo,
+            message: error.message
+          }
+        });
       }
-      dispatch({
-        type: TODO_ACTIONS.UPDATE_TODO_SUCCESS,
-        payload: {
-          fetchedTodo: data,
-          id: data.id
-        }
-      });
-    } catch (error) {
-      dispatch({
-        type: TODO_ACTIONS.UPDATE_TODO_ERROR,
-        payload: {
-          oldTodo: oldTodo,
-          message: error.message
-        }
-      });
     }
   }
 

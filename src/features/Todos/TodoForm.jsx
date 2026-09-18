@@ -2,17 +2,28 @@ import {useRef, useState} from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
 import {isValidTodoTitle} from "../../utils/todoValidation";
 import classes from "../../classes.module.css";
-
+import {sanitizeText} from "../../utils/sanitizeText";
 function TodoForm({onAddTodo}) {
   const inputRef = useRef();
   const [workingTodoTitle, setWorkingTodoTitle] = useState("");
+  const [error, setError] = useState("");
+  const cleanedInput = sanitizeText(workingTodoTitle);
 
   const handleAddTodo = (event) => {
     event.preventDefault();
-
-    onAddTodo(workingTodoTitle);
-    setWorkingTodoTitle("");
-    inputRef.current.focus();
+    setError("");
+    const validationResult = isValidTodoTitle(cleanedInput);
+    if (validationResult === "too-long") {
+      setError("task must be 100 characters or less");
+    } else if (validationResult === "required") {
+      setError("task title is required");
+    } else if (validationResult === "invalid-type") {
+      setError("task must be text");
+    } else {
+      onAddTodo(cleanedInput);
+      setWorkingTodoTitle("");
+      inputRef.current.focus();
+    }
   };
 
   return (
@@ -27,21 +38,17 @@ function TodoForm({onAddTodo}) {
           elementId="todoTitle"
           labelText="Todo"
         />
+
         <button
           className={classes["filter-input"]}
           type="submit"
-          disabled={
-            !isValidTodoTitle(workingTodoTitle) || workingTodoTitle.length > 100
-          }
+          disabled={isValidTodoTitle(cleanedInput) !== "valid"}
         >
           Add Todo
         </button>
       </form>
-      {workingTodoTitle.length > 100 && (
-        <p className={classes["error"]}>
-          Your task has exceeded the maximum character limit
-        </p>
-      )}
+
+      {error && <p className={classes["error"]}>{error}</p>}
     </>
   );
 }
