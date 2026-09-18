@@ -8,7 +8,7 @@ function TextInputWithLabel({
   classNameInput
 }) {
   return (
-    //add sanitation
+    
     <>
       <label className={classNameText} htmlFor={elementId}>{labelText}</label>
       <input

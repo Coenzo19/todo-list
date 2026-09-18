@@ -1,16 +1,19 @@
-# To-Do App 
+# To-Do App
 
 A Demo To-do List application built with React featuring adding, editing, deleting and filtering todos.This Demo demonstrates proficiency in React hooks, state management, component architecture, and responsive design, and error handling with custom validation and extra validation behind the scenes
 
 ## Live Demo Link
+
 Deployment is optional for this project, so no live demo is available.
 
 ## Screenshots
+
 ![Login page](./screenshots/img1.png)
 ![TodosPage](./screenshots/img2.png)
 ![Mobile example](./screenshots/img3.png)
 
 # Feature List
+
 - Add task to keep track of
 - Edit tasks
 - Delete unwanted Tasks
@@ -29,7 +32,7 @@ Deployment is optional for this project, so no live demo is available.
 To install this app click [here](https://github.com/Coenzo19/todo-list) to begin the process. Open Git Bash and type:
 
 > git clone <repo-url>
-cd todo-list/
+> cd todo-list/
 
 once your in your project directory type:
 
@@ -43,7 +46,7 @@ If you are using Git Bash type this command to spin the server
 
 you should see a link that reads like this:
 
-> http://localhost:5173/ 
+> http://localhost:5173/
 
 open the link printed in the console rather than hard-coding a port.
 
@@ -57,24 +60,27 @@ open the link printed in the console rather than hard-coding a port.
 
 **npm run preview** — previews the production build locally
 
-
 ## Design Decision
 
-When designing this app, I used strong contrasting colors so text stays readable against the background. I chose green, light green, brown, and peach because they stand out from one another and create clear visual separation. I added spacing between text elements to make the page easier to scan, and I made sure borders and buttons do not blend in with surrounding content.
+When designing this app, I used CSS Modules to make related styles easier to manage and to keep styles scoped to each component.
 
-I also made buttons and other interactive elements large enough for mobile users and added focus states to improve accessibility.
+I used strong contrasting colors so text elements remain distinguishable and readable. I chose green, light green, brown, and peach because they stand out from one another and create clear visual separation. Consistent colors and hover states help users identify clickable elements.
+
+The heading establishes the app’s purpose and provides clear navigation at the top of the page.
+
+I designed the layout to adapt to smaller screens by using media queries to adjust the layout for mobile when a certain width threshold is met. Some examples are organizing link layouts and filters into columns, and adjusting font sizes to make the app compact for mobile. I kept the layout intentionally simple so the interface remains focused and easy to use.
 
 ## Future Improvements
 
-- **backend authorization check**:  Removing sensitive information and relying more on backend authorization to show live sessions pass user data when the backend becomes available.Remove sensitive information from storage
+- **backend authorization check**: Removing sensitive information and relying more on backend authorization to show live sessions pass user data when the backend becomes available.Remove sensitive information from storage
 - **Robust rollbacks**: Adding stronger rollback functionality when multiple todos are changed in rapid succession
 - **further CSS styling**: Tweaking elements to align better and adjusting more for mobile
 
 ## Contact Information
+
 - **GitHub** https://github.com/Coenzo19
 
 - **Portfolio:** https://www.artstation.com/rromero16
-
 
 ## License Information
 

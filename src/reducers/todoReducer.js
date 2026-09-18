@@ -61,7 +61,7 @@ export function todoReducer(state, action) {
       return {
         ...state,
         error: action.payload.message,
-        filterError:'',
+        filterError: "",
         isTodoListLoading: false
       };
 
@@ -162,20 +162,20 @@ export function todoReducer(state, action) {
         }),
         error: action.payload.message
       };
-    //optmistically delete todo at start
+
     case TODO_ACTIONS.DELETE_TODO_START:
       return {
         ...state,
         todoList: state.todoList.filter((todo) => todo.id != action.payload.id)
       };
-    //update server side to delete it's version of the todo
+
     case TODO_ACTIONS.DELETE_TODO_SUCCESS:
       return {
         ...state,
         dataVersion: state.dataVersion + 1,
         todoList: state.todoList.filter((todo) => todo.id != action.payload.id)
       };
-    //return the deleted todo to the spot it was deleted from
+
     case TODO_ACTIONS.DELETE_TODO_ERROR: {
       const array = [...state.todoList];
       array.splice(action.payload.index, 0, action.payload.deletedTodo);
@@ -202,9 +202,8 @@ export function todoReducer(state, action) {
     case TODO_ACTIONS.VALIDATION_ERROR:
       return {
         ...state,
-        error:'',
+        error: "",
         filterError: action.payload.message
-        
       };
     case TODO_ACTIONS.RESET_FILTERS:
       return {

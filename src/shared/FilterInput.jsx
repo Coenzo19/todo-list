@@ -1,7 +1,7 @@
 import classes from "../classes.module.css";
 export default function FilterInput({filterTerm, onFilterChange}) {
   return (
-    //add sanitation
+    
     <div className={classes["search-todos"]}>
       <label htmlFor="filterInput">Search todos:</label>
       <input

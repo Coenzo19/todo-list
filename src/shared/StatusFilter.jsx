@@ -17,7 +17,7 @@ function StatusFilter() {
     <div className={classes['filter-text']}>
       <label htmlFor="statusFilter">Show</label>
       <select
-      className={classes['filter-input']}
+      className={classes['select-btn']}
         id="statusFilter"
         value={currentStatus}
         onChange={(e) => handleStatusChange(e.target.value)}
