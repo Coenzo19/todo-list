@@ -50,7 +50,7 @@ export function AuthProvider({children}) {
           error: `Authentication failed: ${data?.message}`
         };
       }
-    } catch{
+    } catch {
       return {
         success: false,
         error: "Network error during login"
