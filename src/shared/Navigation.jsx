@@ -6,7 +6,14 @@ export default function Navigation() {
   const {isAuthenticated} = useAuth();
 
   function navLinkStyle({isActive}) {
-    return isActive ? {fontWeight: "bold", textDecoration: "underline",color:'#fcecd8'} : {textDecoration: "none",color:'#fcecd8'};
+    return isActive
+      ? {
+          fontWeight: "bold",
+          textDecoration: "underline",
+          color: "#91AC67",
+          padding: "0 15px"
+        }
+      : {textDecoration: "none", color: "#8B9A6E", padding: "0 15px"};
   }
   return (
     <div>
@@ -29,7 +36,6 @@ export default function Navigation() {
                   Profile
                 </NavLink>
               </li>
-              {isAuthenticated && <Logoff />}
             </>
           ) : (
             <>

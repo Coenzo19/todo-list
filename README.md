@@ -1,63 +1,66 @@
 # To-Do App
 
-A Demo To-do List application built with React featuring adding, editing, deleting and filtering todos.This Demo demonstrates proficiency in React hooks, state management, component architecture, and responsive design, and error handling with custom validation and extra validation behind the scenes
+A demo To-do List application built with React featuring adding, editing, deleting and filtering todos. This demo demonstrates proficiency in React hooks, state management, component architecture, and responsive design, and error handling with custom validation and extra validation behind the scenes
 
 ## Live Demo Link
 
-Deployment is optional for this project, so no live demo is available.
+Deployment is optional for this project, so no live demo is available at this time.
 
-## Screenshots
-**Desktop**
-
-![Desktop Login page](./screenshots/Desktop01.png)
-![Desktop Login page](./screenshots/Desktop02.png)
-
-
-**Mobile**
-
-![Mobile Login page](./screenshots/Mobile01.png)
-![Mobile Login page](./screenshots/Mobile02.png)
-
-
-# Feature List
+## Feature List
 
 - Add task to keep track of
 - Edit tasks
-- Delete unwanted Tasks
+- Delete unwanted tasks
 - Filter existing todos by completed, title, created and change the order list
 - form validation and dynamic navigation
 - data persistence between reloads
 
-# technologies Used
+## Technologies Used
 
 - **Frontend:** React 18, React Router, CSS Modules
-- **State Management:** useReducer, Context API,useState
+- **State Management:** useReducer, Context API, useState
 - **Build Tool:** Vite
 
-## Installing
+## Screenshots
+**Desktop View**
 
-To install this app click [here](https://github.com/Coenzo19/todo-list) to begin the process. Open Git Bash and type:
+![Desktop Login Page](./screenshots/Desktop01.png)
+![Desktop Login Page](./screenshots/Desktop02.png)
 
-> git clone <repo-url>
-> cd todo-list/
+**Mobile View**
 
-once your in your project directory type:
+![Mobile Login Page](./screenshots/Mobile01.png)
+![Mobile Login Page](./screenshots/Mobile02.png)
+
+
+
+## Getting Started
+
+To install this app click [here](https://github.com/Coenzo19/todo-list) to begin the process. Open Git Bash, clone the repo from GitHub and navigate to the project directory :
+
+You will also need to create .env file at the root of you app:
+
+> VITE_TARGET=https://ctd-learns-node-l42tx.ondigitalocean.app
+
+
+
+Once you're in your project directory type:
 
 > npm install
 
 ## Running the App
 
-If you are using Git Bash type this command to spin the server
+If you're using Git Bash type this command to spin the server
 
 > npm run dev
 
-you should see a link that reads like this:
+You should see a link that reads like this:
 
 > http://localhost:5173/
 
-open the link printed in the console rather than hard-coding a port.
+Open the link printed in the console rather than hard-coding a port.
 
-# Available Scripts
+## Available Scripts
 
 **npm install** — installs dependencies
 
@@ -81,15 +84,9 @@ I used a text sanitizer for todo input to remove unsupported characters and keep
 
 ## Future Improvements
 
-- **backend authorization check**: Removing sensitive information and relying more on backend authorization to show live sessions pass user data when the backend becomes available.Remove sensitive information from storage
+- **backend authorization check**: Removing sensitive information and relying more on backend authorization to show live sessions when the backend becomes available. Remove sensitive information from storage
 - **Robust rollbacks**: Adding stronger rollback functionality when multiple todos are changed in rapid succession
 - **further CSS styling**: Tweaking elements to align better and adjusting more for mobile
-
-## Contact Information
-
-- **GitHub** https://github.com/Coenzo19
-
-- **Portfolio:** https://www.artstation.com/rromero16
 
 ## License Information
 
@@ -100,3 +97,9 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Contact Information
+
+- **GitHub** https://github.com/Coenzo19
+
+- **Portfolio:** https://www.artstation.com/rromero16

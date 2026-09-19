@@ -44,7 +44,7 @@ export default function ProfilePage() {
         const active = total - completed;
 
         setTodoStats({total, completed, active});
-      } catch (err) {
+      } catch (error) {
         setError(`Failed to load statistics, Try logging back in and make sure you have Todos to display`);
       } finally {
         setLoading(false);
@@ -54,7 +54,7 @@ export default function ProfilePage() {
   }, [token]);
 
   return (
-    <div className={classes['profile']}>
+    <div className={classes['profile-container']}>
       {loading ? (
         <h2 className={classes["loading"]}>Loading...</h2>
       ) : (

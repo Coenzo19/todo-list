@@ -37,21 +37,21 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo, deleteTodo, index}) {
             )}
             <div className={classes["editing-btn-container"]}>
               <button
-                className={classes["editing-btn"]}
+                className={classes["filters-input"]}
                 type="button"
                 onClick={cancelEdit}
               >
                 Cancel
               </button>
               <button
-                className={classes["editing-btn"]}
+                className={classes["filters-input"]}
                 type="button"
                 onClick={() => deleteTodo(todo, index)}
               >
                 Delete
               </button>
               <button
-                className={classes["editing-btn"]}
+                className={classes["filters-input"]}
                 type="button"
                 onClick={(event) => {
                   if (!isEditing) return;
@@ -77,7 +77,7 @@ function TodoListItem({onUpdateTodo, todo, onCompleteTodo, deleteTodo, index}) {
                 onChange={() => onCompleteTodo(todo.id)}
               />
             </label>
-            <span onClick={startEditing}>{todo.title}</span>
+            <button className={classes["list-text"]} onClick={startEditing}>{todo.title}</button>
           </>
         )}
       </form>

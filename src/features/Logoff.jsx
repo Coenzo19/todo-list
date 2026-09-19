@@ -24,7 +24,7 @@ export default function Logoff() {
   }
 
   return (
-    <button className={classes["logoff-btn"]} onClick={handleLogoff} disabled={isLoggingOff}>
+    <button className={classes["logOff-btn"]} onClick={handleLogoff} disabled={isLoggingOff}>
       {isLoggingOff ? "Logging out" : "Log Off"}
     </button>
   );

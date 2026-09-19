@@ -88,7 +88,7 @@ export default function TodosPage() {
         } else {
           dispatch({
             type: TODO_ACTIONS.FETCH_ERROR,
-            payload: {message: `Error fetching todos: ${error.message}`}
+            payload: {message: `Error fetching todos,please try again later`}
           });
         }
       }
@@ -98,11 +98,11 @@ export default function TodosPage() {
 
   const handleFilterChange = (newTerm) => {
     const cleanedInput = sanitizeText(newTerm);
-
+    console.log(cleanedInput.length);
     if (cleanedInput.length >= 30) {
       dispatch({
         type: TODO_ACTIONS.VALIDATION_ERROR,
-        payload: {message: "You've exceeded the maximum character length"}
+        payload: {message: "Search terms must be 30 characters or fewer"}
       });
       return;
     }
@@ -213,7 +213,7 @@ export default function TodosPage() {
         credentials: "include"
       });
       if (!response.ok) {
-        throw new Error(`Error: ${response.status} could not delete todo`);
+        throw new Error(`Could not delete todo`);
       }
     } catch (error) {
       dispatch({
@@ -270,7 +270,7 @@ export default function TodosPage() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(`Error: ${response.status}, could not edit Todo`);
+          throw new Error(`Could not edit Todo`);
         }
         dispatch({
           type: TODO_ACTIONS.UPDATE_TODO_SUCCESS,
@@ -294,71 +294,76 @@ export default function TodosPage() {
   return (
     <div>
       <div className={classes["filter-container"]}>
-        <SortBy
-          sortBy={sortBy}
-          sortDirection={sortDirection}
-          onSortByChange={(value) =>
-            dispatch({
-              type: TODO_ACTIONS.SET_SORT,
-              payload: {sortBy: value, sortDirection: sortDirection}
-            })
-          }
-          onSortDirectionChange={(value) =>
-            dispatch({
-              type: TODO_ACTIONS.SET_SORT,
-              payload: {sortBy: sortBy, sortDirection: value}
-            })
-          }
+        <div className={classes["filters"]}>
+          <SortBy
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onSortByChange={(value) =>
+              dispatch({
+                type: TODO_ACTIONS.SET_SORT,
+                payload: {sortBy: value, sortDirection: sortDirection}
+              })
+            }
+            onSortDirectionChange={(value) =>
+              dispatch({
+                type: TODO_ACTIONS.SET_SORT,
+                payload: {sortBy: sortBy, sortDirection: value}
+              })
+            }
+          />
+          <StatusFilter />
+        </div>
+        <FilterInput
+          filterTerm={filterTerm}
+          onFilterChange={handleFilterChange}
         />
-        <StatusFilter />
+        {error && (
+          <div className={classes["error"]}>
+            <p>{error}</p>
+            <button
+              className={classes["error-btn"]}
+              onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}
+            >
+              Clear Error
+            </button>
+          </div>
+        )}
+        {filterError && (
+          <div className={classes["error"]}>
+            <p>{filterError}</p>
+            <button
+              className={classes["error-btn"]}
+              onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_FILTER_ERROR})}
+            >
+              Clear Filter Error
+            </button>
+            <button
+              className={classes["error-btn"]}
+              onClick={() => {
+                dispatch({type: TODO_ACTIONS.RESET_FILTERS});
+              }}
+            >
+              Reset Filters
+            </button>
+          </div>
+        )}
       </div>
-      <FilterInput
-        filterTerm={filterTerm}
-        onFilterChange={handleFilterChange}
-      />
-      {error && (
-        <div className={classes["error"]}>
-          <p>{error}</p>
-          <button
-            className={classes["error-btn"]}
-            onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}
-          >
-            Clear Error
-          </button>
-        </div>
-      )}
 
-      {filterError && (
-        <div className={classes["error"]}>
-          <p>{filterError}</p>
-          <button
-            className={classes["error-btn"]}
-            onClick={() => dispatch({type: TODO_ACTIONS.CLEAR_FILTER_ERROR})}
-          >
-            Clear Filter Error
-          </button>
-          <button
-            className={classes["error-btn"]}
-            onClick={() => {
-              dispatch({type: TODO_ACTIONS.RESET_FILTERS});
-            }}
-          >
-            Reset Filters
-          </button>
-        </div>
-      )}
-
-      <TodoForm onAddTodo={addTodo} />
-      {isTodoListLoading && <h2 className={classes["loading"]}>Loading...</h2>}
-      <TodoList
-        isTodoListLoading={isTodoListLoading}
-        deleteTodo={deleteTodo}
-        onUpdateTodo={updateTodo}
-        todoList={state.todoList}
-        onCompleteTodo={completeTodo}
-        dataVersion={dataVersion}
-        statusFilter={statusFilter}
-      />
+      <div className={classes["add-todo-container"]}>
+        <TodoForm onAddTodo={addTodo} />
+        {isTodoListLoading && (
+          <h2 className={classes["loading"]}>Loading...</h2>
+        )}
+        <TodoList
+          isTodoListLoading={isTodoListLoading}
+          deleteTodo={deleteTodo}
+          onUpdateTodo={updateTodo}
+          todoList={state.todoList}
+          onCompleteTodo={completeTodo}
+          dataVersion={dataVersion}
+          statusFilter={statusFilter}
+        />
+      </div>
     </div>
   );
 }
