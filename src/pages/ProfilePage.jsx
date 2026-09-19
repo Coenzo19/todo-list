@@ -44,7 +44,7 @@ export default function ProfilePage() {
         const active = total - completed;
 
         setTodoStats({total, completed, active});
-      } catch{
+      } catch {
         setError(`Failed to load statistics, Try logging back in and make sure you have Todos to display`);
       } finally {
         setLoading(false);
