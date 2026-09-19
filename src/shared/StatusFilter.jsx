@@ -14,18 +14,20 @@ function StatusFilter() {
   };
 
   return (
-    <div className={classes['filter-text']}>
-      <label htmlFor="statusFilter">Show</label>
-      <select
-      className={classes['select-btn']}
-        id="statusFilter"
-        value={currentStatus}
-        onChange={(e) => handleStatusChange(e.target.value)}
-      >
-        <option value="all">All Todos</option>
-        <option value="active">Active Todos</option>
-        <option value="completed">Completed Todos</option>
-      </select>
+    <div>
+      <div>
+        <label htmlFor="statusFilter" className={classes["filters-text"]}>Show</label>
+        <select
+          className={classes["filters-input"]}
+          id="statusFilter"
+          value={currentStatus}
+          onChange={(e) => handleStatusChange(e.target.value)}
+        >
+          <option value="all">All Todos</option>
+          <option value="active">Active Todos</option>
+          <option value="completed">Completed Todos</option>
+        </select>
+      </div>
     </div>
   );
 }

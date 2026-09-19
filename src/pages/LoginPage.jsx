@@ -10,7 +10,6 @@ export default function LoginPage() {
   const [isLoggingOn, setIsLoggingOn] = useState(false);
   const {login, isAuthenticated} = useAuth();
   const cleanedEmail = sanitizeText(email);
-  const cleanedPassword = sanitizeText(password);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/todos";
@@ -24,6 +23,7 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     setAuthError("");
+
     if (typeof cleanedEmail != "string") {
       setAuthError("Email must be text");
       return;
@@ -36,23 +36,22 @@ export default function LoginPage() {
       setAuthError("Email is required");
       return;
     }
-    if (typeof cleanedPassword != "string") {
+    if (typeof password != "string") {
       setAuthError("Password must be text");
       return;
     }
-    if (cleanedPassword.length > 30) {
+    if (password.length > 30) {
       setAuthError("Password must be 30 characters or fewer");
       return;
     }
-    if (cleanedPassword.length < 1) {
+    if (password.length < 1) {
       setAuthError("Password is required");
       return;
     }
-
     try {
       setIsLoggingOn(true);
 
-      const result = await login(cleanedEmail, cleanedPassword);
+      const result = await login(cleanedEmail, password);
 
       if (result.success === false) {
         setAuthError(result.error);
@@ -67,10 +66,10 @@ export default function LoginPage() {
     <form onSubmit={handleSubmit} className={classes["login-container"]}>
       {authError && (
         <p
-          className={classes["auth-error"]}
+          className={classes["error"]}
         >{`Please check that your username or email is correct`}</p>
       )}
-      <label className={classes["login-labels"]} htmlFor="email">
+      <label className={classes["labels"]} htmlFor="email">
         Email
       </label>
       <input
@@ -80,12 +79,13 @@ export default function LoginPage() {
         id="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        maxLength={30}
       />
-      <span className={classes["validation-error"]}>
-        {email.length > 30 && <p>Email must be 30 characters or fewer</p>}
+      <span className={classes["error"]}>
+        {email.length >= 30 && <p>Email must be 30 characters or fewer</p>}
       </span>
 
-      <label className={classes["login-labels"]} htmlFor="password">
+      <label className={classes["labels"]} htmlFor="password">
         Password
       </label>
       <input
@@ -95,12 +95,15 @@ export default function LoginPage() {
         id="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        maxLength={30}
       />
-      <span className={classes["validation-error"]}>
-        {password.length > 30 && <p>Password must be 30 characters or fewer</p>}
+      <span className={classes["error"]}>
+        {password.length >= 30 && (
+          <p>Password must be 30 characters or fewer</p>
+        )}
       </span>
       <button
-        className={classes["logOn-button"]}
+        className={classes["btn"]}
         type="submit"
         disabled={isLoggingOn || email.length > 30 || password.length > 30}
       >

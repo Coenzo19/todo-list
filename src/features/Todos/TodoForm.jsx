@@ -14,11 +14,14 @@ function TodoForm({onAddTodo}) {
     setError("");
     const validationResult = isValidTodoTitle(cleanedInput);
     if (validationResult === "too-long") {
-      setError("task must be 100 characters or less");
+      setError("Task must be 100 characters or less");
+      return;
     } else if (validationResult === "required") {
-      setError("task title is required");
+      setError("Task title is required");
+      return;
     } else if (validationResult === "invalid-type") {
-      setError("task must be text");
+      setError("Task must be text");
+      return;
     } else {
       onAddTodo(cleanedInput);
       setWorkingTodoTitle("");
@@ -28,22 +31,17 @@ function TodoForm({onAddTodo}) {
 
   return (
     <>
-      <form className={classes["add-todo-container"]} onSubmit={handleAddTodo}>
+      <form className={classes["add-todo"]} onSubmit={handleAddTodo}>
         <TextInputWithLabel
-          classNameText={classes["add-todo-text"]}
-          classNameInput={classes["add-todo-input"]}
+          classNameText={classes["filters-text"]}
+          classNameInput={classes["filters-input"]}
           ref={inputRef}
           value={workingTodoTitle}
           onChange={(e) => setWorkingTodoTitle(e.target.value)}
           elementId="todoTitle"
           labelText="Todo"
         />
-
-        <button
-          className={classes["filter-input"]}
-          type="submit"
-          disabled={isValidTodoTitle(cleanedInput) !== "valid"}
-        >
+        <button className={classes["filters-input"]} type="submit">
           Add Todo
         </button>
       </form>

@@ -2,7 +2,7 @@ import classes from "../classes.module.css";
 
 export default function AboutPage() {
   return (
-    <div className={classes['about']}>
+    <div className={classes["about-container"]}>
       <h1>About Todo List</h1>
 
       <p>
