@@ -50,7 +50,7 @@ export function AuthProvider({children}) {
           error: `Authentication failed: ${data?.message}`
         };
       }
-    } catch (error) {
+    } catch{
       return {
         success: false,
         error: "Network error during login"
@@ -83,7 +83,7 @@ export function AuthProvider({children}) {
       } else {
         throw new Error(res.statusText);
       }
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: "Network error during logout"
