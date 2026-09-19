@@ -73,7 +73,7 @@ export default function TodosPage() {
           type: TODO_ACTIONS.FETCH_SUCCESS,
           payload: {todos: data.tasks}
         });
-      } catch (error) {
+      } catch {
         if (
           debouncedFilterTerm ||
           sortBy !== "createdAt" ||
@@ -98,7 +98,6 @@ export default function TodosPage() {
 
   const handleFilterChange = (newTerm) => {
     const cleanedInput = sanitizeText(newTerm);
-    console.log(cleanedInput.length);
     if (cleanedInput.length >= 30) {
       dispatch({
         type: TODO_ACTIONS.VALIDATION_ERROR,

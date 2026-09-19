@@ -56,7 +56,7 @@ export default function LoginPage() {
       if (result.success === false) {
         setAuthError(result.error);
       }
-    } catch (error) {
+    } catch {
       setAuthError(`Error: Unable to log in. Please try again.`);
     } finally {
       setIsLoggingOn(false);
